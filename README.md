@@ -227,38 +227,3 @@ The game records:
 * Number of hints used
 
 The leaderboard displays the highest scores.
-
-## 🚀 Deployment
-
-The project is deployed using **Vercel**.
-
-Production URL:
-
-https://digital-mystery-room-inky.vercel.app/
-
-The source code is maintained on GitHub:
-
-https://github.com/madhuri-027/Digital-Mystery-Room
-
-## 🔮 Future Improvements
-
-* Multiple mystery rooms
-* More puzzle types
-* Better 3D models and textures
-* Sound effects and background music
-* Character animations
-* Difficulty levels
-* Multiplayer mode
-* Improved leaderboard
-* More interactive objects
-* Mobile optimization
-
-## 👩‍💻 Author
-
-**Madhuri Gugulothu**
-
-B.Tech – Artificial Intelligence and Machine Learning
-
-## 📄 License
-
-This project is created for educational and project-development purposes.
