@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Mystery Room</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+    <div id="game-ui">
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+
+            <div class="player-name">
+                🕵️ {{ player_name }}
+            </div>
+
+            <div id="timer">
+                15:00
+            </div>
+
+        </div>
+
+
+        <!-- MISSIONS BUTTON -->
+        <button
+            id="missions-button"
+            onclick="document.getElementById('missions-panel').style.display='block';"
+        >
+            🎯 MISSIONS
+        </button>
+
+
+        <!-- MISSIONS PANEL -->
+        <div id="missions-panel">
+
+            <!-- CLOSE BUTTON -->
+            <button
+                id="close-missions"
+                onclick="document.getElementById('missions-panel').style.display='none';"
+            >
+                ×
+            </button>
+
+
+            <h2>🎯 MISSIONS</h2>
+
+
+            <!-- MISSION LIST -->
+
+            <div id="mission-list">
+
+                <div class="mission-step" id="mission-1">
+                    <span class="mission-check">☐</span>
+                    <span class="mission-title">Find the painting</span>
+                </div>
+
+
+                <div class="mission-step" id="mission-2">
+                    <span class="mission-check">☐</span>
+                    <span class="mission-title">Solve the bookshelf</span>
+                </div>
+
+
+                <div class="mission-step" id="mission-3">
+                    <span class="mission-check">☐</span>
+                    <span class="mission-title">Unlock the drawer</span>
+                </div>
+
+
+                <div class="mission-step" id="mission-4">
+                    <span class="mission-check">☐</span>
+                    <span class="mission-title">Hack the computer</span>
+                </div>
+
+
+                <div class="mission-step" id="mission-5">
+                    <span class="mission-check">☐</span>
+                    <span class="mission-title">Find the key</span>
+                </div>
+
+
+                <div class="mission-step" id="mission-6">
+                    <span class="mission-check">☐</span>
+                    <span class="mission-title">Escape the room</span>
+                </div>
+
+            </div>
+
+
+            <!-- ACTIVE MISSION -->
+
+            <div id="mission-tools">
+
+                <div id="current-mission">
+                    Current Mission:
+                    <strong>Find the painting</strong>
+                </div>
+
+
+                <div class="mission-buttons">
+
+                    <button id="mission-hint-button">
+                        💡 HINT
+                    </button>
+
+
+                    <button id="mission-clue-button">
+                        🔎 CLUE
+                    </button>
+
+                </div>
+
+
+                <!-- HINT / CLUE TEXT -->
+
+                <div id="mission-help-text">
+                    Explore the room and look carefully at the walls.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MISSION MESSAGE -->
+
+        <div class="mission-box">
+            Explore the room and solve every mystery.
+        </div>
+
+
+        <!-- INTERACTION MESSAGE -->
+
+        <div id="interaction-message">
+            Press E to investigate
+        </div>
+
+
+        <!-- CROSSHAIR -->
+
+        <div class="crosshair">
+            +
+        </div>
+
+
+        <!-- BOTTOM BAR -->
+
+        <div class="bottom-bar">
+
+            <span>
+                🔍 Clues:
+                <strong id="clues-found">0</strong>
+            </span>
+
+
+            <span>
+                🧩 Puzzles:
+                <strong id="puzzles-solved">0</strong>
+            </span>
+
+
+            <span>
+                💡 Hints:
+                <strong id="hints-left">3</strong>
+            </span>
+
+        </div>
+
+
+        <!-- MOVEMENT CONTROLS -->
+
+        <div id="movement-controls">
+
+            <button id="move-up">
+                ▲
+            </button>
+
+
+            <div class="side-controls">
+
+                <button id="move-left">
+                    ◀
+                </button>
+
+
+                <button id="move-right">
+                    ▶
+                </button>
+
+            </div>
+
+
+            <button id="move-down">
+                ▼
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL -->
+
+    <div id="modal">
+
+        <div id="modal-content">
+
+            <button id="close-modal">
+                ×
+            </button>
+
+
+            <div id="modal-body"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- THREE.JS IMPORT MAP -->
+
+    <script type="importmap">
+
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+        }
+    }
+
+    </script>
+
+
+    <!-- GAME JAVASCRIPT -->
+
+    <script
+        type="module"
+        src="{{ url_for('static', filename='js/three-game.js') }}"
+    ></script>
+    <div class="explore-message">
+        When you are trying to access for clue<br>
+        Press E to Explore
+    </div>
+</body>
+
+</html>

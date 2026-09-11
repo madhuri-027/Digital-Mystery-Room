@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Digital Mystery Room</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+    
+</head>
+
+<body>
+    <div id="interaction-prompt"></div>
+    <div class="explore-message">When you are trying to access for clue&nbsp;&nbsp; Press E to Explore</div>
+    <div class="home-page">
+
+        <div class="home-container">
+
+            <h1>🔎 DIGITAL MYSTERY ROOM</h1>
+
+            <p>
+                Can you solve the mystery before time runs out?
+            </p>
+
+            <form action="/start" method="POST">
+
+                <input
+                    type="text"
+                    name="player_name"
+                    placeholder="Enter your detective name"
+                    required
+                >
+
+                <button type="submit">
+                    ▶ Start Mystery
+                </button>
+
+            </form>
+
+            <a href="/how-to-play" class="secondary-button">
+                📖 How to Play
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

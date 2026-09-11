@@ -1,0 +1,954 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* =====================================================
+   HOME PAGE
+===================================================== */
+
+.home-page {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            rgba(5, 10, 20, 0.65),
+            rgba(5, 10, 20, 0.85)
+        ),
+        url("https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.home-container {
+    width: 600px;
+    max-width: 90%;
+
+    padding: 50px;
+
+    text-align: center;
+
+    background: rgba(10, 15, 25, 0.92);
+
+    border: 2px solid #38bdf8;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 25px rgba(56, 189, 248, 0.4),
+        0 0 70px rgba(56, 189, 248, 0.15);
+}
+
+.home-container h1 {
+    margin: 0 0 20px;
+
+    font-size: 42px;
+
+    color: #38bdf8;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 10px rgba(56, 189, 248, 0.7);
+}
+
+.home-container p {
+    margin-bottom: 35px;
+
+    font-size: 20px;
+
+    color: #dbeafe;
+}
+
+.home-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.home-container input {
+    width: 100%;
+
+    padding: 15px;
+
+    border: 2px solid #475569;
+
+    border-radius: 10px;
+
+    background: #111827;
+
+    color: white;
+
+    font-size: 17px;
+
+    outline: none;
+}
+
+.home-container input::placeholder {
+    color: #94a3b8;
+}
+
+.home-container input:focus {
+    border-color: #38bdf8;
+
+    box-shadow:
+        0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.home-container button {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #38bdf8;
+
+    color: #07111f;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.home-container button:hover {
+    background: #7dd3fc;
+
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: #334155;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+.secondary-button:hover {
+    background: #475569;
+}
+
+
+/* =====================================================
+   GAME PAGE
+===================================================== */
+
+canvas {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
+}
+
+#game-ui {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+.top-bar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 25px;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    pointer-events: none;
+}
+
+#timer {
+    font-size: 25px;
+
+    color: #ff4444;
+}
+
+#missions-button {
+    position: fixed;
+
+    top: 80px;
+    left: 20px;
+
+    padding: 12px 20px;
+
+    background: #111827;
+
+    color: white;
+
+    border: 2px solid white;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 999999;
+
+    pointer-events: auto;
+}
+
+#missions-button:hover {
+    background: #263449;
+}
+
+#missions-panel {
+    display: none;
+
+    position: fixed;
+
+    top: 130px;
+    left: 20px;
+
+    width: 330px;
+
+    padding: 25px;
+
+    background: rgba(10, 10, 20, 0.97);
+
+    color: white;
+
+    border: 2px solid white;
+
+    border-radius: 12px;
+
+    z-index: 999999;
+
+    pointer-events: auto;
+}
+
+#missions-panel h2 {
+    margin-top: 0;
+}
+
+#close-missions {
+    position: absolute;
+
+    top: 5px;
+    right: 10px;
+
+    background: none;
+
+    color: white;
+
+    border: none;
+
+    font-size: 30px;
+
+    cursor: pointer;
+}
+
+.mission-step {
+    padding: 12px 5px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+    font-size: 16px;
+}
+
+.mission-step.completed {
+    color: #00ff88;
+
+    text-decoration: line-through;
+}
+
+.mission-box {
+    position: fixed;
+
+    top: 80px;
+    right: 20px;
+
+    padding: 12px 18px;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    color: white;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+}
+
+#interaction-message {
+    display: none;
+
+    position: fixed;
+
+    bottom: 100px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 12px 20px;
+
+    background: rgba(0, 0, 0, 0.85);
+
+    color: white;
+
+    border: 1px solid white;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    z-index: 100;
+}
+
+.crosshair {
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    color: white;
+
+    font-size: 25px;
+
+    z-index: 50;
+
+    text-shadow: 0 0 5px black;
+
+    pointer-events: none;
+}
+
+.bottom-bar {
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 55px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 40px;
+
+    background: rgba(0, 0, 0, 0.8);
+
+    color: white;
+
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+#movement-controls {
+    position: fixed;
+
+    right: 25px;
+    bottom: 75px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 5px;
+
+    z-index: 100;
+
+    pointer-events: auto;
+}
+
+.side-controls {
+    display: flex;
+
+    gap: 5px;
+}
+
+#movement-controls button {
+    width: 50px;
+    height: 50px;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    color: white;
+
+    border: 2px solid white;
+
+    border-radius: 8px;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    touch-action: none;
+}
+
+#movement-controls button:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+
+/* =====================================================
+   PUZZLE MODAL
+===================================================== */
+
+#modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    z-index: 1000000;
+
+    align-items: center;
+
+    justify-content: center;
+
+    pointer-events: auto;
+}
+
+#modal-content {
+    position: relative;
+
+    width: 500px;
+
+    max-width: 90%;
+
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    padding: 35px;
+
+    background: #111827;
+
+    color: white;
+
+    border: 2px solid white;
+
+    border-radius: 15px;
+
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+#close-modal {
+    position: absolute;
+
+    top: 8px;
+    right: 12px;
+
+    background: none;
+
+    color: white;
+
+    border: none;
+
+    font-size: 30px;
+
+    cursor: pointer;
+}
+
+#modal-body h2 {
+    margin-top: 0;
+
+    font-size: 28px;
+}
+
+#modal-body h3 {
+    color: #00ff88;
+}
+
+#modal-body p {
+    line-height: 1.6;
+
+    font-size: 16px;
+}
+
+.puzzle-input {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 15px;
+
+    background: white;
+
+    color: black;
+
+    border: none;
+
+    border-radius: 7px;
+
+    font-size: 17px;
+
+    outline: none;
+}
+
+.puzzle-button {
+    margin-top: 12px;
+
+    padding: 11px 22px;
+
+    background: #2563eb;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    font-weight: bold;
+}
+
+.puzzle-button:hover {
+    background: #1d4ed8;
+}
+
+.puzzle-result {
+    margin-top: 15px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+.clue-box {
+    margin-top: 20px;
+
+    padding: 15px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border-left: 4px solid #00ff88;
+
+    border-radius: 5px;
+}
+
+
+/* =====================================================
+   ESCAPE / RESULT PAGE
+===================================================== */
+
+.result-page {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #172554 0%,
+            #0f172a 45%,
+            #020617 100%
+        );
+
+    color: white;
+}
+
+
+/* Result Card */
+
+.result-container {
+    width: 650px;
+    max-width: 95%;
+
+    padding: 45px;
+
+    text-align: center;
+
+    background: rgba(15, 23, 42, 0.96);
+
+    border: 2px solid #38bdf8;
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 0 30px rgba(56, 189, 248, 0.4),
+        0 0 80px rgba(56, 189, 248, 0.15);
+
+    animation: resultAppear 0.8s ease;
+}
+
+
+/* Main Heading */
+
+.result-container h1 {
+    margin: 0 0 15px;
+
+    font-size: 48px;
+
+    color: #4ade80;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 10px rgba(74, 222, 128, 0.8),
+        0 0 25px rgba(74, 222, 128, 0.4);
+}
+
+
+/* Congratulations */
+
+.result-container h2 {
+    margin: 0 0 35px;
+
+    font-size: 21px;
+
+    font-weight: normal;
+
+    color: #cbd5e1;
+}
+
+
+/* Statistics */
+
+.result-stats {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 30px;
+}
+
+
+/* Individual Stat */
+
+.stat-box {
+    padding: 22px 15px;
+
+    background: rgba(30, 41, 59, 0.9);
+
+    border: 1px solid #475569;
+
+    border-radius: 15px;
+
+    transition: 0.3s;
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+
+    border-color: #38bdf8;
+
+    box-shadow:
+        0 0 18px rgba(56, 189, 248, 0.3);
+}
+
+
+/* Stat Title */
+
+.stat-title {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 14px;
+
+    color: #94a3b8;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+/* Stat Value */
+
+.stat-value {
+    display: block;
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    color: white;
+}
+
+
+/* Score */
+
+.score {
+    margin: 25px 0 30px;
+
+    font-size: 18px;
+
+    color: #facc15;
+
+    text-transform: uppercase;
+
+    letter-spacing: 2px;
+}
+
+.score strong {
+    display: block;
+
+    margin-top: 8px;
+
+    font-size: 52px;
+
+    color: #facc15;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 10px rgba(250, 204, 21, 0.8),
+        0 0 25px rgba(250, 204, 21, 0.4);
+}
+
+
+/* Buttons */
+
+.result-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+.result-buttons a {
+    display: inline-block;
+
+    padding: 14px 25px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+
+/* Play Again */
+
+.play-again {
+    background: #2563eb;
+
+    color: white;
+
+    border: 2px solid #3b82f6;
+
+    box-shadow:
+        0 0 15px rgba(37, 99, 235, 0.3);
+}
+
+.play-again:hover {
+    background: #3b82f6;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 0 25px rgba(59, 130, 246, 0.5);
+}
+
+
+/* Leaderboard */
+
+.leaderboard {
+    background: #334155;
+
+    color: white;
+
+    border: 2px solid #475569;
+}
+
+.leaderboard:hover {
+    background: #475569;
+
+    transform: translateY(-3px);
+}
+
+
+/* Result Animation */
+
+@keyframes resultAppear {
+
+    from {
+        opacity: 0;
+
+        transform: scale(0.85)
+                   translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: scale(1)
+                   translateY(0);
+    }
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .home-container {
+        padding: 30px 20px;
+    }
+
+    .home-container h1 {
+        font-size: 30px;
+    }
+
+    .home-container p {
+        font-size: 17px;
+    }
+
+    .mission-box {
+        display: none;
+    }
+
+    .bottom-bar {
+        gap: 10px;
+
+        font-size: 12px;
+    }
+
+    #missions-panel {
+        width: 290px;
+    }
+
+    #modal-content {
+        width: 90%;
+
+        padding: 25px;
+    }
+
+
+    /* Result page mobile */
+
+    .result-page {
+        padding: 20px;
+    }
+
+    .result-container {
+        padding: 30px 20px;
+    }
+
+    .result-container h1 {
+        font-size: 34px;
+    }
+
+    .result-container h2 {
+        font-size: 17px;
+
+        margin-bottom: 25px;
+    }
+
+    .result-stats {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+    .score strong {
+        font-size: 42px;
+    }
+
+    .result-buttons {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .result-buttons a {
+        width: 100%;
+    }
+}
+.explore-message{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:rgba(0,0,0,0.8);
+    color:white;
+    padding:12px 20px;
+    border-radius:8px;
+    font-size:16px;
+    z-index:100;
+}

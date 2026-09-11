@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Mystery Result</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+{% if leaderboard %}
+
+<!-- =====================================================
+     LEADERBOARD PAGE
+===================================================== -->
+
+<div class="result-page">
+
+    <div class="result-container">
+
+        <h1>🏆 LEADERBOARD</h1>
+
+        <h2>
+            Top Detectives
+        </h2>
+
+        <table class="leaderboard-table">
+
+            <thead>
+
+                <tr>
+                    <th>Detective</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                    <th>Hints</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in leaderboard %}
+
+                <tr>
+
+                    <td>
+                        {{ row["player_name"] }}
+                    </td>
+
+                    <td>
+                        {{ row["score"] }}
+                    </td>
+
+                    <td>
+                        {{ row["time_remaining"] }} sec
+                    </td>
+
+                    <td>
+                        {{ row["hints_used"] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <div class="result-buttons">
+
+            <a
+                href="/"
+                class="play-again"
+            >
+                🏠 Home
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<!-- =====================================================
+     ESCAPE RESULT PAGE
+===================================================== -->
+
+<div class="result-page">
+
+    <div class="result-container">
+
+        <h1>
+            🎉 YOU ESCAPED!
+        </h1>
+
+        <h2>
+            Congratulations, {{ player_name }}!
+        </h2>
+
+        <p>
+            You successfully escaped the laboratory.
+        </p>
+
+
+        <!-- GAME STATISTICS -->
+
+        <div class="result-stats">
+
+            <div class="stat-box">
+
+                <span class="stat-title">
+                    ⏱ Time Remaining
+                </span>
+
+                <span class="stat-value">
+                    {{ time_remaining }} seconds
+                </span>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <span class="stat-title">
+                    💡 Hints Used
+                </span>
+
+                <span class="stat-value">
+                    {{ hints_used }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SCORE -->
+
+        <div class="score">
+
+            🏆 SCORE
+
+            <strong>
+                {{ score }}
+            </strong>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="result-buttons">
+
+            <a
+                href="/"
+                class="play-again"
+            >
+                🔄 Play Again
+            </a>
+
+            <a
+                href="/leaderboard"
+                class="leaderboard"
+            >
+                🏆 Leaderboard
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+</body>
+
+</html>
