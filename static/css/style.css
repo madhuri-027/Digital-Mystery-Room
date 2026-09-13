@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -8,8 +9,30 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
+    min-height: 100%;
     font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
+
+body {
+    background: #020617;
+    color: white;
+}
+
+button,
+input,
+a {
+    font-family: inherit;
+}
+
+button {
+    touch-action: manipulation;
+}
+
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
 
 /* =====================================================
    HOME PAGE
@@ -17,59 +40,76 @@ body {
 
 .home-page {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    padding: 30px 20px;
+
     background:
         linear-gradient(
             rgba(5, 10, 20, 0.65),
-            rgba(5, 10, 20, 0.85)
+            rgba(5, 10, 20, 0.9)
         ),
-        url("https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80");
+        url("https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1800&q=85");
 
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 
 .home-container {
-    width: 600px;
-    max-width: 90%;
+    width: 100%;
+    max-width: 1100px;
 
-    padding: 50px;
+    padding: 40px;
 
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
 
-    background: rgba(10, 15, 25, 0.92);
+    background: rgba(10, 15, 25, 0.94);
 
-    border: 2px solid #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.7);
 
-    border-radius: 20px;
+    border-radius: 24px;
 
     box-shadow:
-        0 0 25px rgba(56, 189, 248, 0.4),
-        0 0 70px rgba(56, 189, 248, 0.15);
+        0 0 30px rgba(56, 189, 248, 0.3),
+        0 0 90px rgba(56, 189, 248, 0.1);
+
+    backdrop-filter: blur(10px);
+}
+
+.home-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .home-container h1 {
-    margin: 0 0 20px;
+    margin: 0 0 15px;
 
-    font-size: 42px;
+    font-size: clamp(32px, 5vw, 52px);
 
     color: #38bdf8;
 
     letter-spacing: 2px;
 
     text-shadow:
-        0 0 10px rgba(56, 189, 248, 0.7);
+        0 0 10px rgba(56, 189, 248, 0.7),
+        0 0 25px rgba(56, 189, 248, 0.3);
 }
 
 .home-container p {
-    margin-bottom: 35px;
+    margin: 0 0 28px;
 
-    font-size: 20px;
+    font-size: 19px;
+
+    line-height: 1.6;
 
     color: #dbeafe;
 }
@@ -77,13 +117,21 @@ body {
 .home-container form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 14px;
 }
 
-.home-container input {
+.home-container label {
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.home-container input,
+.home-container select {
     width: 100%;
 
-    padding: 15px;
+    padding: 15px 16px;
 
     border: 2px solid #475569;
 
@@ -96,17 +144,20 @@ body {
     font-size: 17px;
 
     outline: none;
+
+    transition: 0.2s;
 }
 
 .home-container input::placeholder {
     color: #94a3b8;
 }
 
-.home-container input:focus {
+.home-container input:focus,
+.home-container select:focus {
     border-color: #38bdf8;
 
     box-shadow:
-        0 0 10px rgba(56, 189, 248, 0.3);
+        0 0 12px rgba(56, 189, 248, 0.3);
 }
 
 .home-container button {
@@ -127,6 +178,8 @@ body {
     font-weight: bold;
 
     cursor: pointer;
+
+    transition: 0.2s;
 }
 
 .home-container button:hover {
@@ -135,14 +188,18 @@ body {
     transform: translateY(-2px);
 }
 
+.home-container button:active {
+    transform: scale(0.98);
+}
+
 .secondary-button {
     display: block;
 
     width: 100%;
 
-    margin-top: 15px;
+    margin-top: 12px;
 
-    padding: 15px;
+    padding: 14px;
 
     border-radius: 10px;
 
@@ -155,6 +212,10 @@ body {
     font-size: 17px;
 
     font-weight: bold;
+
+    text-align: center;
+
+    transition: 0.2s;
 }
 
 .secondary-button:hover {
@@ -163,8 +224,146 @@ body {
 
 
 /* =====================================================
+   HOME PAGE - LEADERBOARD
+===================================================== */
+
+.home-leaderboard {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    background: rgba(15, 23, 42, 0.85);
+
+    border: 1px solid rgba(148, 163, 184, 0.3);
+
+    border-radius: 18px;
+
+    padding: 25px;
+}
+
+.home-leaderboard h2 {
+    margin: 0 0 5px;
+
+    font-size: 26px;
+
+    color: #facc15;
+}
+
+.home-leaderboard-subtitle {
+    margin: 0 0 18px;
+
+    color: #94a3b8;
+
+    font-size: 14px;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    max-height: 440px;
+
+    overflow-y: auto;
+}
+
+.leaderboard-row {
+    display: grid;
+
+    grid-template-columns: 45px 1fr auto;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px;
+
+    background: rgba(30, 41, 59, 0.8);
+
+    border: 1px solid rgba(71, 85, 105, 0.7);
+
+    border-radius: 10px;
+}
+
+.leaderboard-rank {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #1e293b;
+
+    color: #facc15;
+
+    font-weight: bold;
+}
+
+.leaderboard-player {
+    min-width: 0;
+}
+
+.leaderboard-player strong {
+    display: block;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: white;
+}
+
+.leaderboard-player span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+.leaderboard-score {
+    color: #4ade80;
+
+    font-weight: bold;
+
+    font-size: 17px;
+}
+
+.no-scores {
+    padding: 25px 10px;
+
+    text-align: center;
+
+    color: #94a3b8;
+}
+
+
+/* =====================================================
    GAME PAGE
 ===================================================== */
+
+body.game-body {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+
+    overflow: hidden;
+
+    background: #000;
+
+    user-select: none;
+
+    overscroll-behavior: none;
+}
 
 canvas {
     position: fixed;
@@ -174,7 +373,11 @@ canvas {
     width: 100%;
     height: 100%;
 
+    display: block;
+
     z-index: 1;
+
+    touch-action: none;
 }
 
 #game-ui {
@@ -185,7 +388,14 @@ canvas {
     z-index: 10;
 
     pointer-events: none;
+
+    overflow: hidden;
 }
+
+
+/* =====================================================
+   TOP HUD
+===================================================== */
 
 .top-bar {
     position: fixed;
@@ -194,7 +404,8 @@ canvas {
     left: 0;
 
     width: 100%;
-    height: 60px;
+
+    min-height: 62px;
 
     display: flex;
 
@@ -202,42 +413,143 @@ canvas {
 
     justify-content: space-between;
 
-    padding: 0 25px;
+    gap: 15px;
 
-    background: rgba(0, 0, 0, 0.75);
+    padding: 8px 20px;
+
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.85),
+        rgba(0, 0, 0, 0.55)
+    );
 
     color: white;
 
-    font-size: 18px;
+    font-size: 17px;
 
     font-weight: bold;
 
     pointer-events: none;
+
+    z-index: 30;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.player-info span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.room-name {
+    color: #38bdf8;
 }
 
 #timer {
-    font-size: 25px;
+    padding: 7px 12px;
+
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.65);
 
     color: #ff4444;
+
+    font-size: 23px;
+
+    letter-spacing: 1px;
+
+    text-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
 }
+
+
+/* =====================================================
+   GAME ACTION BUTTONS
+===================================================== */
+
+.game-action-buttons {
+    position: fixed;
+
+    top: 75px;
+    right: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    z-index: 200;
+
+    pointer-events: auto;
+}
+
+.game-action-buttons button,
+.game-action-button {
+    min-width: 130px;
+
+    padding: 11px 15px;
+
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
+    border-radius: 9px;
+
+    background: rgba(5, 10, 20, 0.82);
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(5px);
+
+    transition: 0.2s;
+}
+
+.game-action-buttons button:hover,
+.game-action-button:hover {
+    background: rgba(30, 41, 59, 0.95);
+
+    transform: translateY(-1px);
+}
+
+.game-action-buttons button:active,
+.game-action-button:active {
+    transform: scale(0.96);
+}
+
+
+/* =====================================================
+   MISSIONS
+===================================================== */
 
 #missions-button {
     position: fixed;
 
-    top: 80px;
+    top: 78px;
     left: 20px;
 
-    padding: 12px 20px;
+    min-height: 45px;
 
-    background: #111827;
+    padding: 11px 18px;
+
+    background: rgba(15, 23, 42, 0.9);
 
     color: white;
 
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.8);
 
-    border-radius: 8px;
+    border-radius: 9px;
 
-    font-size: 16px;
+    font-size: 15px;
 
     font-weight: bold;
 
@@ -246,6 +558,9 @@ canvas {
     z-index: 999999;
 
     pointer-events: auto;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.35);
 }
 
 #missions-button:hover {
@@ -257,35 +572,55 @@ canvas {
 
     position: fixed;
 
-    top: 130px;
+    top: 135px;
     left: 20px;
 
-    width: 330px;
+    width: 350px;
 
-    padding: 25px;
+    max-width: calc(100vw - 40px);
+
+    max-height: 70vh;
+
+    overflow-y: auto;
+
+    padding: 24px;
 
     background: rgba(10, 10, 20, 0.97);
 
     color: white;
 
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.8);
 
-    border-radius: 12px;
+    border-radius: 14px;
 
     z-index: 999999;
 
     pointer-events: auto;
+
+    box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.6);
 }
 
 #missions-panel h2 {
-    margin-top: 0;
+    margin: 0 0 15px;
+
+    color: #38bdf8;
+
+    font-size: 22px;
 }
 
 #close-missions {
     position: absolute;
 
-    top: 5px;
+    top: 7px;
     right: 10px;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     background: none;
 
@@ -293,17 +628,19 @@ canvas {
 
     border: none;
 
-    font-size: 30px;
+    font-size: 28px;
 
     cursor: pointer;
 }
 
 .mission-step {
-    padding: 12px 5px;
+    padding: 13px 5px;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 
-    font-size: 16px;
+    font-size: 15px;
+
+    line-height: 1.4;
 }
 
 .mission-step.completed {
@@ -312,47 +649,106 @@ canvas {
     text-decoration: line-through;
 }
 
+.mission-step.active {
+    color: #38bdf8;
+
+    font-weight: bold;
+}
+
+.mission-hint-button {
+    margin-top: 8px;
+
+    padding: 7px 10px;
+
+    border: 1px solid #64748b;
+
+    border-radius: 6px;
+
+    background: #1e293b;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+.mission-hint-button:hover {
+    background: #334155;
+}
+
+
+/* =====================================================
+   MISSION / INFO BOX
+===================================================== */
+
 .mission-box {
     position: fixed;
 
-    top: 80px;
-    right: 20px;
+    top: 75px;
+    left: 50%;
 
-    padding: 12px 18px;
+    transform: translateX(-50%);
 
-    background: rgba(0, 0, 0, 0.75);
+    max-width: min(500px, calc(100vw - 40px));
+
+    padding: 10px 16px;
+
+    background: rgba(0, 0, 0, 0.78);
 
     color: white;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
 
     border-radius: 8px;
 
     font-size: 14px;
+
+    text-align: center;
+
+    z-index: 40;
+
+    pointer-events: none;
 }
+
+
+/* =====================================================
+   INTERACTION MESSAGE
+===================================================== */
 
 #interaction-message {
     display: none;
 
     position: fixed;
 
-    bottom: 100px;
+    bottom: 110px;
     left: 50%;
 
     transform: translateX(-50%);
 
+    max-width: calc(100vw - 40px);
+
     padding: 12px 20px;
 
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.88);
 
     color: white;
 
-    border: 1px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.65);
 
-    border-radius: 8px;
+    border-radius: 9px;
 
     font-size: 16px;
 
+    text-align: center;
+
     z-index: 100;
+
+    pointer-events: none;
 }
+
+
+/* =====================================================
+   CROSSHAIR
+===================================================== */
 
 .crosshair {
     position: fixed;
@@ -373,32 +769,143 @@ canvas {
     pointer-events: none;
 }
 
-.bottom-bar {
+
+/* =====================================================
+   MOBILE TOUCH JOYSTICK
+===================================================== */
+
+#mobile-controls {
     position: fixed;
 
-    bottom: 0;
-    left: 0;
+    inset: 0;
 
-    width: 100%;
-
-    height: 55px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 40px;
-
-    background: rgba(0, 0, 0, 0.8);
-
-    color: white;
-
-    font-size: 15px;
+    z-index: 150;
 
     pointer-events: none;
 }
+
+#joystick-zone {
+    position: absolute;
+
+    left: 22px;
+    bottom: 35px;
+
+    width: 145px;
+    height: 145px;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.18);
+
+    border: 2px solid rgba(255, 255, 255, 0.28);
+
+    pointer-events: auto;
+
+    touch-action: none;
+}
+
+#joystick-knob {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 62px;
+    height: 62px;
+
+    margin-left: -31px;
+    margin-top: -31px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.32);
+
+    border: 2px solid rgba(255, 255, 255, 0.7);
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.35);
+
+    pointer-events: none;
+}
+
+#look-zone {
+    position: absolute;
+
+    right: 0;
+    top: 80px;
+
+    width: 52%;
+
+    height: calc(100% - 160px);
+
+    pointer-events: auto;
+
+    touch-action: none;
+
+    background: transparent;
+}
+
+
+/* =====================================================
+   MOBILE ACTION BUTTONS
+===================================================== */
+
+#mobile-action-buttons {
+    position: fixed;
+
+    right: 20px;
+    bottom: 35px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 12px;
+
+    z-index: 200;
+
+    pointer-events: auto;
+}
+
+.mobile-action {
+    width: 68px;
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    color: white;
+
+    border: 2px solid rgba(255, 255, 255, 0.75);
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    touch-action: none;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.mobile-action:active {
+    background: rgba(56, 189, 248, 0.65);
+
+    transform: scale(0.94);
+}
+
+
+/* =====================================================
+   OLD MOVEMENT CONTROLS
+   Kept for compatibility with current JS
+===================================================== */
 
 #movement-controls {
     position: fixed;
@@ -450,6 +957,115 @@ canvas {
 
 
 /* =====================================================
+   SETTINGS / ROOM MENU
+===================================================== */
+
+#settings-panel,
+#room-panel {
+    display: none;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 420px;
+
+    max-width: calc(100vw - 35px);
+
+    max-height: calc(100vh - 50px);
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    background: rgba(8, 15, 28, 0.98);
+
+    color: white;
+
+    border: 2px solid #38bdf8;
+
+    border-radius: 16px;
+
+    z-index: 1000000;
+
+    pointer-events: auto;
+
+    box-shadow:
+        0 20px 70px rgba(0, 0, 0, 0.7);
+}
+
+#settings-panel h2,
+#room-panel h2 {
+    margin: 0 0 20px;
+
+    color: #38bdf8;
+
+    font-size: 25px;
+}
+
+.settings-option,
+.room-option {
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 14px;
+
+    border: 1px solid #475569;
+
+    border-radius: 9px;
+
+    background: #1e293b;
+
+    color: white;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    font-size: 16px;
+
+    transition: 0.2s;
+}
+
+.settings-option:hover,
+.room-option:hover {
+    background: #334155;
+
+    border-color: #38bdf8;
+}
+
+.room-option.active {
+    border-color: #38bdf8;
+
+    background: rgba(56, 189, 248, 0.15);
+}
+
+.close-panel {
+    position: absolute;
+
+    top: 8px;
+    right: 10px;
+
+    width: 38px;
+    height: 38px;
+
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
    PUZZLE MODAL
 ===================================================== */
 
@@ -460,7 +1076,7 @@ canvas {
 
     inset: 0;
 
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.78);
 
     z-index: 1000000;
 
@@ -468,31 +1084,36 @@ canvas {
 
     justify-content: center;
 
+    padding: 20px;
+
     pointer-events: auto;
+
+    backdrop-filter: blur(5px);
 }
 
 #modal-content {
     position: relative;
 
-    width: 500px;
+    width: 550px;
 
-    max-width: 90%;
+    max-width: 100%;
 
-    max-height: 80vh;
+    max-height: 88vh;
 
     overflow-y: auto;
 
-    padding: 35px;
+    padding: 32px;
 
     background: #111827;
 
     color: white;
 
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.7);
 
-    border-radius: 15px;
+    border-radius: 16px;
 
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+    box-shadow:
+        0 0 40px rgba(0, 0, 0, 0.8);
 }
 
 #close-modal {
@@ -500,6 +1121,9 @@ canvas {
 
     top: 8px;
     right: 12px;
+
+    width: 40px;
+    height: 40px;
 
     background: none;
 
@@ -513,9 +1137,11 @@ canvas {
 }
 
 #modal-body h2 {
-    margin-top: 0;
+    margin: 0 35px 15px 0;
 
     font-size: 28px;
+
+    color: #38bdf8;
 }
 
 #modal-body h3 {
@@ -528,10 +1154,16 @@ canvas {
     font-size: 16px;
 }
 
+#modal-body ul {
+    padding-left: 22px;
+
+    line-height: 1.7;
+}
+
 .puzzle-input {
     width: 100%;
 
-    padding: 12px;
+    padding: 13px;
 
     margin-top: 15px;
 
@@ -539,7 +1171,7 @@ canvas {
 
     color: black;
 
-    border: none;
+    border: 2px solid transparent;
 
     border-radius: 7px;
 
@@ -548,10 +1180,14 @@ canvas {
     outline: none;
 }
 
+.puzzle-input:focus {
+    border-color: #38bdf8;
+}
+
 .puzzle-button {
     margin-top: 12px;
 
-    padding: 11px 22px;
+    padding: 12px 22px;
 
     background: #2563eb;
 
@@ -566,10 +1202,16 @@ canvas {
     font-size: 16px;
 
     font-weight: bold;
+
+    touch-action: manipulation;
 }
 
 .puzzle-button:hover {
     background: #1d4ed8;
+}
+
+.puzzle-button:active {
+    transform: scale(0.97);
 }
 
 .puzzle-result {
@@ -590,6 +1232,44 @@ canvas {
     border-left: 4px solid #00ff88;
 
     border-radius: 5px;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   ROOM / LIGHT MODE
+===================================================== */
+
+body.light-mode {
+    background: #dbeafe;
+}
+
+body.dark-mode {
+    background: #020617;
+}
+
+.light-mode .top-bar {
+    background: linear-gradient(
+        rgba(15, 23, 42, 0.72),
+        rgba(15, 23, 42, 0.45)
+    );
+}
+
+.light-mode .game-action-buttons button,
+.light-mode .game-action-button {
+    background: rgba(255, 255, 255, 0.78);
+
+    color: #0f172a;
+
+    border-color: #334155;
+}
+
+.dark-mode .game-action-buttons button,
+.dark-mode .game-action-button {
+    background: rgba(0, 0, 0, 0.8);
+
+    color: white;
 }
 
 
@@ -599,10 +1279,14 @@ canvas {
 
 .result-page {
     width: 100%;
+
     min-height: 100vh;
+    min-height: 100dvh;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     padding: 30px;
@@ -619,11 +1303,14 @@ canvas {
 }
 
 
-/* Result Card */
+/* =====================================================
+   RESULT CARD
+===================================================== */
 
 .result-container {
     width: 650px;
-    max-width: 95%;
+
+    max-width: 100%;
 
     padding: 45px;
 
@@ -642,9 +1329,6 @@ canvas {
     animation: resultAppear 0.8s ease;
 }
 
-
-/* Main Heading */
-
 .result-container h1 {
     margin: 0 0 15px;
 
@@ -659,9 +1343,6 @@ canvas {
         0 0 25px rgba(74, 222, 128, 0.4);
 }
 
-
-/* Congratulations */
-
 .result-container h2 {
     margin: 0 0 35px;
 
@@ -673,7 +1354,9 @@ canvas {
 }
 
 
-/* Statistics */
+/* =====================================================
+   RESULT STATISTICS
+===================================================== */
 
 .result-stats {
     display: grid;
@@ -684,9 +1367,6 @@ canvas {
 
     margin-bottom: 30px;
 }
-
-
-/* Individual Stat */
 
 .stat-box {
     padding: 22px 15px;
@@ -709,9 +1389,6 @@ canvas {
         0 0 18px rgba(56, 189, 248, 0.3);
 }
 
-
-/* Stat Title */
-
 .stat-title {
     display: block;
 
@@ -726,9 +1403,6 @@ canvas {
     letter-spacing: 1px;
 }
 
-
-/* Stat Value */
-
 .stat-value {
     display: block;
 
@@ -740,7 +1414,9 @@ canvas {
 }
 
 
-/* Score */
+/* =====================================================
+   SCORE
+===================================================== */
 
 .score {
     margin: 25px 0 30px;
@@ -771,7 +1447,9 @@ canvas {
 }
 
 
-/* Buttons */
+/* =====================================================
+   RESULT BUTTONS
+===================================================== */
 
 .result-buttons {
     display: flex;
@@ -801,9 +1479,6 @@ canvas {
     transition: 0.3s;
 }
 
-
-/* Play Again */
-
 .play-again {
     background: #2563eb;
 
@@ -824,9 +1499,6 @@ canvas {
         0 0 25px rgba(59, 130, 246, 0.5);
 }
 
-
-/* Leaderboard */
-
 .leaderboard {
     background: #334155;
 
@@ -842,22 +1514,83 @@ canvas {
 }
 
 
-/* Result Animation */
+/* =====================================================
+   RESULT ANIMATION
+===================================================== */
 
 @keyframes resultAppear {
 
     from {
         opacity: 0;
 
-        transform: scale(0.85)
-                   translateY(30px);
+        transform:
+            scale(0.85)
+            translateY(30px);
     }
 
     to {
         opacity: 1;
 
-        transform: scale(1)
-                   translateY(0);
+        transform:
+            scale(1)
+            translateY(0);
+    }
+}
+
+
+/* =====================================================
+   EXPLORE MESSAGE
+===================================================== */
+
+.explore-message {
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    max-width: calc(100vw - 40px);
+
+    background: rgba(0, 0, 0, 0.8);
+
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    z-index: 100;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .home-container {
+        grid-template-columns: 1fr;
+
+        max-width: 650px;
+
+        padding: 30px;
+    }
+
+    .home-leaderboard {
+        max-height: 450px;
+    }
+
+    .game-action-buttons {
+        top: 75px;
+        right: 15px;
+    }
+
+    .top-bar {
+        padding: 8px 14px;
     }
 }
 
@@ -868,47 +1601,266 @@ canvas {
 
 @media (max-width: 600px) {
 
+    html,
+    body {
+        width: 100%;
+        min-height: 100%;
+    }
+
+    .home-page {
+        padding: 15px;
+
+        background-attachment: scroll;
+    }
+
     .home-container {
-        padding: 30px 20px;
+        width: 100%;
+
+        padding: 25px 18px;
+
+        gap: 20px;
+
+        border-radius: 18px;
     }
 
     .home-container h1 {
         font-size: 30px;
+
+        letter-spacing: 1px;
     }
 
     .home-container p {
-        font-size: 17px;
+        font-size: 16px;
+
+        line-height: 1.5;
+
+        margin-bottom: 20px;
     }
 
-    .mission-box {
+    .home-container input,
+    .home-container select {
+        padding: 14px;
+
+        font-size: 16px;
+    }
+
+    .home-container button,
+    .secondary-button {
+        min-height: 50px;
+
+        font-size: 16px;
+    }
+
+    .home-leaderboard {
+        padding: 18px;
+
+        border-radius: 14px;
+    }
+
+    .home-leaderboard h2 {
+        font-size: 22px;
+    }
+
+    .leaderboard-row {
+        grid-template-columns: 38px 1fr auto;
+
+        padding: 10px;
+
+        gap: 8px;
+    }
+
+    .leaderboard-rank {
+        width: 30px;
+        height: 30px;
+
+        font-size: 13px;
+    }
+
+    .leaderboard-score {
+        font-size: 15px;
+    }
+
+
+    /* GAME HUD */
+
+    .top-bar {
+        min-height: 52px;
+
+        padding: 6px 10px;
+
+        font-size: 13px;
+    }
+
+    #timer {
+        padding: 5px 8px;
+
+        font-size: 18px;
+    }
+
+    .player-info {
+        max-width: 55%;
+    }
+
+
+    /* MISSIONS */
+
+    #missions-button {
+        top: 63px;
+        left: 10px;
+
+        min-height: 42px;
+
+        padding: 9px 12px;
+
+        font-size: 13px;
+    }
+
+    #missions-panel {
+        top: 112px;
+        left: 10px;
+
+        width: calc(100vw - 20px);
+
+        max-height: 68vh;
+
+        padding: 20px;
+    }
+
+    .mission-step {
+        font-size: 14px;
+    }
+
+
+    /* ACTION BUTTONS */
+
+    .game-action-buttons {
+        top: 62px;
+        right: 10px;
+
+        gap: 5px;
+    }
+
+    .game-action-buttons button,
+    .game-action-button {
+        min-width: auto;
+
+        padding: 8px 10px;
+
+        font-size: 11px;
+    }
+
+
+    /* OLD BUTTONS HIDDEN */
+
+    #movement-controls {
         display: none;
     }
 
-    .bottom-bar {
-        gap: 10px;
+
+    /* MOBILE JOYSTICK */
+
+    #joystick-zone {
+        left: 18px;
+        bottom: 24px;
+
+        width: 125px;
+        height: 125px;
+    }
+
+    #joystick-knob {
+        width: 55px;
+        height: 55px;
+
+        margin-left: -27.5px;
+        margin-top: -27.5px;
+    }
+
+    #mobile-action-buttons {
+        right: 18px;
+        bottom: 24px;
+
+        gap: 8px;
+    }
+
+    .mobile-action {
+        width: 62px;
+        height: 62px;
 
         font-size: 12px;
     }
 
-    #missions-panel {
-        width: 290px;
+
+    /* LOOK AREA */
+
+    #look-zone {
+        top: 65px;
+
+        height: calc(100% - 135px);
+
+        width: 55%;
+    }
+
+
+    /* INTERACTION */
+
+    #interaction-message {
+        bottom: 105px;
+
+        max-width: calc(100vw - 30px);
+
+        padding: 10px 14px;
+
+        font-size: 14px;
+    }
+
+
+    /* MODAL */
+
+    #modal {
+        padding: 10px;
     }
 
     #modal-content {
-        width: 90%;
+        width: 100%;
 
-        padding: 25px;
+        max-height: 92vh;
+
+        padding: 25px 18px;
+
+        border-radius: 13px;
+    }
+
+    #modal-body h2 {
+        font-size: 22px;
+    }
+
+    #modal-body p {
+        font-size: 15px;
+    }
+
+    .puzzle-input {
+        font-size: 16px;
+
+        min-height: 48px;
+    }
+
+    .puzzle-button {
+        min-height: 46px;
+
+        width: 100%;
     }
 
 
-    /* Result page mobile */
+    /* RESULT */
 
     .result-page {
-        padding: 20px;
+        padding: 15px;
     }
 
     .result-container {
-        padding: 30px 20px;
+        padding: 30px 18px;
+
+        border-radius: 18px;
     }
 
     .result-container h1 {
@@ -940,15 +1892,247 @@ canvas {
     .result-buttons a {
         width: 100%;
     }
+
+
+    /* SETTINGS / ROOM */
+
+    #settings-panel,
+    #room-panel {
+        width: calc(100vw - 24px);
+
+        max-height: 85vh;
+
+        padding: 22px 18px;
+    }
 }
-.explore-message{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    background:rgba(0,0,0,0.8);
-    color:white;
-    padding:12px 20px;
-    border-radius:8px;
-    font-size:16px;
-    z-index:100;
+
+
+/* =====================================================
+   LANDSCAPE MOBILE
+===================================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    body.game-body {
+        width: 100vw;
+        height: 100dvh;
+
+        overflow: hidden;
+    }
+
+    .top-bar {
+        min-height: 44px;
+
+        padding: 5px 10px;
+
+        font-size: 12px;
+    }
+
+    #timer {
+        font-size: 16px;
+
+        padding: 4px 8px;
+    }
+
+    #missions-button {
+        top: 52px;
+        left: 10px;
+
+        min-height: 38px;
+
+        padding: 7px 11px;
+
+        font-size: 12px;
+    }
+
+    .game-action-buttons {
+        top: 50px;
+        right: 10px;
+
+        flex-direction: row;
+
+        gap: 5px;
+    }
+
+    .game-action-buttons button,
+    .game-action-button {
+        padding: 7px 9px;
+
+        font-size: 10px;
+    }
+
+    #joystick-zone {
+        left: 18px;
+        bottom: 15px;
+
+        width: 105px;
+        height: 105px;
+    }
+
+    #joystick-knob {
+        width: 48px;
+        height: 48px;
+
+        margin-left: -24px;
+        margin-top: -24px;
+    }
+
+    #mobile-action-buttons {
+        right: 18px;
+        bottom: 15px;
+    }
+
+    .mobile-action {
+        width: 55px;
+        height: 55px;
+
+        font-size: 11px;
+    }
+
+    #interaction-message {
+        bottom: 78px;
+
+        font-size: 13px;
+    }
+
+    #missions-panel {
+        top: 50px;
+
+        max-height: calc(100vh - 65px);
+    }
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* =====================================================
+   NO TEXT SELECTION DURING GAME
+===================================================== */
+
+.game-body *,
+#game-ui,
+#mobile-controls,
+#joystick-zone,
+#look-zone {
+    -webkit-user-select: none;
+    user-select: none;
+}
+/* =====================================================
+   MOBILE ROTATION MESSAGE
+===================================================== */
+
+#orientation-message {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999999;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(2, 6, 23, 0.97);
+
+    color: white;
+
+    text-align: center;
+
+    pointer-events: auto;
+}
+
+.orientation-icon {
+    font-size: 60px;
+
+    margin-bottom: 15px;
+}
+
+#orientation-message h2 {
+    margin: 0 0 10px;
+
+    color: #38bdf8;
+
+    font-size: 25px;
+}
+
+#orientation-message p {
+    margin: 0;
+
+    color: #cbd5e1;
+
+    line-height: 1.6;
+
+    font-size: 16px;
+}
+
+
+/* Show rotation message only on portrait mobile */
+
+@media (max-width: 900px) and (orientation: portrait) {
+
+    #orientation-message {
+        display: flex;
+    }
+
+}
+/* PC CONTROLS - LEFT SIDE */
+#desktop-help,
+.desktop-help,
+.pc-controls {
+    position: fixed !important;
+    left: 15px !important;
+    bottom: 25px !important;
+    top: auto !important;
+    right: auto !important;
+
+    width: 190px !important;
+    padding: 12px 16px !important;
+
+    background: rgba(15, 23, 42, 0.88) !important;
+    border-radius: 10px !important;
+
+    color: white !important;
+    text-align: left !important;
+
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+
+    z-index: 1000 !important;
+    box-sizing: border-box !important;
+}
+
+#desktop-help strong,
+.desktop-help strong,
+.pc-controls strong {
+    display: block !important;
+    margin-bottom: 4px !important;
+    font-size: 14px !important;
+    text-align: left !important;
+}
+
+@media (max-width: 900px) {
+    #desktop-help,
+    .desktop-help,
+    .pc-controls {
+        display: none !important;
+    }
 }

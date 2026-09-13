@@ -1,68 +1,188 @@
 let timeLeft = 15 * 60;
-let timerInterval;
+let timerInterval = null;
 
+
+/* =====================================================
+   UPDATE TIMER
+===================================================== */
 
 function updateTimer() {
 
-    const minutes = Math.floor(timeLeft / 60);
+    const minutes =
+        Math.floor(timeLeft / 60);
 
-    const seconds = timeLeft % 60;
+    const seconds =
+        timeLeft % 60;
 
     const formattedSeconds =
-        seconds.toString().padStart(2, "0");
+        seconds
+            .toString()
+            .padStart(2, "0");
 
-    document.getElementById("timer").textContent =
-        `TIME LEFT: ${minutes}:${formattedSeconds}`;
+
+    const timer =
+        document.getElementById("timer");
+
+
+    if (timer) {
+
+        timer.textContent =
+            `TIME LEFT: ${minutes}:${formattedSeconds}`;
+
+    }
+
+
+    /* Warning states */
+
+    if (timer) {
+
+        timer.classList.remove(
+            "timer-warning",
+            "timer-danger"
+        );
+
+
+        if (timeLeft <= 60) {
+
+            timer.classList.add(
+                "timer-danger"
+            );
+
+        } else if (timeLeft <= 300) {
+
+            timer.classList.add(
+                "timer-warning"
+            );
+
+        }
+
+    }
+
 }
 
+
+/* =====================================================
+   START TIMER
+===================================================== */
 
 function startTimer() {
 
+    stopTimer();
+
     updateTimer();
 
-    timerInterval = setInterval(() => {
 
-        timeLeft--;
+    timerInterval =
+        setInterval(
+            function () {
 
-        updateTimer();
+                if (timeLeft <= 0) {
 
-        if (timeLeft <= 0) {
+                    timeLeft = 0;
 
-            timeLeft = 0;
+                    updateTimer();
 
-            clearInterval(timerInterval);
+                    stopTimer();
 
-            timeUp();
-        }
+                    timeUp();
 
-    }, 1000);
+                    return;
+                }
+
+
+                timeLeft--;
+
+                updateTimer();
+
+            },
+            1000
+        );
 }
 
+
+/* =====================================================
+   STOP TIMER
+===================================================== */
 
 function stopTimer() {
 
-    clearInterval(timerInterval);
+    if (timerInterval !== null) {
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval = null;
+
+    }
+
 }
 
+
+/* =====================================================
+   TIME UP
+===================================================== */
 
 function timeUp() {
 
     stopTimer();
 
-    document.getElementById("modal-body").innerHTML = `
-        <h2>⏰ TIME'S UP!</h2>
 
-        <p>
-            The laboratory remains locked.
-        </p>
+    const modal =
+        document.getElementById(
+            "modal"
+        );
 
-        <button onclick="location.reload()">
-            Try Again
-        </button>
+
+    const modalBody =
+        document.getElementById(
+            "modal-body"
+        );
+
+
+    if (!modal || !modalBody) {
+        return;
+    }
+
+
+    modalBody.innerHTML = `
+
+        <div class="time-up-screen">
+
+            <div class="time-up-icon">
+                ⏰
+            </div>
+
+            <h2>
+                TIME'S UP!
+            </h2>
+
+            <p>
+                The room remains locked.
+            </p>
+
+            <p>
+                Your investigation has ended.
+            </p>
+
+            <button
+                onclick="location.href='/'"
+            >
+                🏠 Return Home
+            </button>
+
+        </div>
+
     `;
 
-    document.getElementById("modal").style.display = "flex";
+
+    modal.style.display =
+        "flex";
 }
 
+
+/* =====================================================
+   START GAME TIMER
+===================================================== */
 
 startTimer();

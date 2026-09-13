@@ -10,7 +10,18 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Mystery Result</title>
+    <meta
+        name="theme-color"
+        content="#020617"
+    >
+
+    <title>
+        {% if leaderboard %}
+            Leaderboard
+        {% else %}
+            Mystery Result
+        {% endif %}
+    </title>
 
     <link
         rel="stylesheet"
@@ -19,175 +30,407 @@
 
 </head>
 
+
 <body>
+
 
 {% if leaderboard %}
 
+
 <!-- =====================================================
-     LEADERBOARD PAGE
-===================================================== -->
+     LEADERBOARD
+====================================================== -->
 
 <div class="result-page">
 
-    <div class="result-container">
 
-        <h1>🏆 LEADERBOARD</h1>
+    <div class="result-container leaderboard-result">
 
-        <h2>
-            Top Detectives
-        </h2>
 
-        <table class="leaderboard-table">
-
-            <thead>
-
-                <tr>
-                    <th>Detective</th>
-                    <th>Score</th>
-                    <th>Time</th>
-                    <th>Hints</th>
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for row in leaderboard %}
-
-                <tr>
-
-                    <td>
-                        {{ row["player_name"] }}
-                    </td>
-
-                    <td>
-                        {{ row["score"] }}
-                    </td>
-
-                    <td>
-                        {{ row["time_remaining"] }} sec
-                    </td>
-
-                    <td>
-                        {{ row["hints_used"] }}
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
-        <div class="result-buttons">
-
-            <a
-                href="/"
-                class="play-again"
-            >
-                🏠 Home
-            </a>
-
+        <div class="result-icon">
+            🏆
         </div>
 
-    </div>
-
-</div>
-
-{% else %}
-
-<!-- =====================================================
-     ESCAPE RESULT PAGE
-===================================================== -->
-
-<div class="result-page">
-
-    <div class="result-container">
 
         <h1>
-            🎉 YOU ESCAPED!
+            LEADERBOARD
         </h1>
 
-        <h2>
-            Congratulations, {{ player_name }}!
-        </h2>
 
-        <p>
-            You successfully escaped the laboratory.
+        <p class="result-subtitle">
+            Top Detectives
         </p>
 
 
-        <!-- GAME STATISTICS -->
 
-        <div class="result-stats">
-
-            <div class="stat-box">
-
-                <span class="stat-title">
-                    ⏱ Time Remaining
-                </span>
-
-                <span class="stat-value">
-                    {{ time_remaining }} seconds
-                </span>
-
-            </div>
+        {% if leaderboard %}
 
 
-            <div class="stat-box">
+        <div class="leaderboard-table-wrapper">
 
-                <span class="stat-title">
-                    💡 Hints Used
-                </span>
 
-                <span class="stat-value">
-                    {{ hints_used }}
-                </span>
+            <table class="leaderboard-table">
 
-            </div>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Rank
+                        </th>
+
+                        <th>
+                            Detective
+                        </th>
+
+                        <th>
+                            Room
+                        </th>
+
+                        <th>
+                            Score
+                        </th>
+
+                        <th>
+                            Time
+                        </th>
+
+                        <th>
+                            Hints
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                {% for row in leaderboard %}
+
+
+                    <tr
+                        {% if loop.index <= 3 %}
+                            class="top-rank"
+                        {% endif %}
+                    >
+
+
+                        <td>
+
+                            {% if loop.index == 1 %}
+
+                                🥇
+
+                            {% elif loop.index == 2 %}
+
+                                🥈
+
+                            {% elif loop.index == 3 %}
+
+                                🥉
+
+                            {% else %}
+
+                                {{ loop.index }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+                                {{ row["player_name"] }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if row["room_name"] %}
+
+                                {{ row["room_name"] }}
+
+                            {% else %}
+
+                                Laboratory
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <strong class="table-score">
+                                {{ row["score"] }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            {{ row["time_remaining"] }}
+                            sec
+
+                        </td>
+
+
+                        <td>
+
+                            {{ row["hints_used"] }}
+
+                        </td>
+
+
+                    </tr>
+
+
+                {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
 
         </div>
 
 
-        <!-- SCORE -->
+        {% else %}
 
-        <div class="score">
 
-            🏆 SCORE
+        <div class="no-scores">
 
-            <strong>
-                {{ score }}
-            </strong>
+            <div class="empty-icon">
+                🕵️
+            </div>
+
+            <h3>
+                No scores yet
+            </h3>
+
+            <p>
+                Be the first detective to escape!
+            </p>
 
         </div>
+
+
+        {% endif %}
+
 
 
         <!-- BUTTONS -->
 
         <div class="result-buttons">
 
+
             <a
-                href="/"
+                href="{{ url_for('home') }}"
+                class="play-again"
+            >
+                🏠 Home
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+{% else %}
+
+
+
+<!-- =====================================================
+     ESCAPE RESULT
+====================================================== -->
+
+<div class="result-page">
+
+
+    <div class="result-container">
+
+
+        <div class="result-icon">
+            🎉
+        </div>
+
+
+        <h1>
+            YOU ESCAPED!
+        </h1>
+
+
+        <h2>
+
+            Congratulations,
+            {{ player_name }}!
+
+        </h2>
+
+
+        <p class="result-subtitle">
+
+            You successfully escaped
+            the {{ room_name }}.
+
+        </p>
+
+
+
+        <!-- =================================================
+             GAME STATISTICS
+        ================================================== -->
+
+        <div class="result-stats">
+
+
+            <div class="stat-box">
+
+
+                <span class="stat-title">
+
+                    ⏱
+                    Time Remaining
+
+                </span>
+
+
+                <span class="stat-value">
+
+                    {{ time_remaining }}
+                    seconds
+
+                </span>
+
+
+            </div>
+
+
+
+            <div class="stat-box">
+
+
+                <span class="stat-title">
+
+                    💡
+                    Hints Used
+
+                </span>
+
+
+                <span class="stat-value">
+
+                    {{ hints_used }}
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             SCORE
+        ================================================== -->
+
+        <div class="score">
+
+
+            <span>
+                🏆 SCORE
+            </span>
+
+
+            <strong>
+                {{ score }}
+            </strong>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             RESULT MESSAGE
+        ================================================== -->
+
+        <div class="result-message">
+
+            {% if score >= 900 %}
+
+                ⭐ Outstanding detective work!
+
+            {% elif score >= 700 %}
+
+                🔥 Excellent investigation!
+
+            {% elif score >= 500 %}
+
+                👏 Good work, detective!
+
+            {% else %}
+
+                🕵️ Mystery solved!
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- =================================================
+             BUTTONS
+        ================================================== -->
+
+        <div class="result-buttons">
+
+
+            <a
+                href="{{ url_for('home') }}"
                 class="play-again"
             >
                 🔄 Play Again
             </a>
 
+
             <a
-                href="/leaderboard"
+                href="{{ url_for('leaderboard') }}"
                 class="leaderboard"
             >
                 🏆 Leaderboard
             </a>
 
+
         </div>
+
 
     </div>
 
+
 </div>
 
+
 {% endif %}
+
+
 
 </body>
 

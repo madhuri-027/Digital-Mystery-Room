@@ -7,7 +7,12 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#020617"
     >
 
     <title>Digital Mystery Room</title>
@@ -16,44 +21,276 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/style.css') }}"
     >
-    
+
 </head>
 
+
 <body>
-    <div id="interaction-prompt"></div>
-    <div class="explore-message">When you are trying to access for clue&nbsp;&nbsp; Press E to Explore</div>
+
     <div class="home-page">
 
         <div class="home-container">
 
-            <h1>🔎 DIGITAL MYSTERY ROOM</h1>
 
-            <p>
-                Can you solve the mystery before time runs out?
-            </p>
+            <!-- =================================================
+                 LEFT SIDE
+            ================================================== -->
 
-            <form action="/start" method="POST">
+            <div class="home-main">
 
-                <input
-                    type="text"
-                    name="player_name"
-                    placeholder="Enter your detective name"
-                    required
+                <h1>
+                    🔎 DIGITAL<br>
+                    MYSTERY ROOM
+                </h1>
+
+                <p>
+                    Can you solve the mystery before time runs out?
+                </p>
+
+
+                <form
+                    action="{{ url_for('start') }}"
+                    method="POST"
                 >
 
-                <button type="submit">
-                    ▶ Start Mystery
-                </button>
 
-            </form>
+                    <!-- PLAYER NAME -->
 
-            <a href="/how-to-play" class="secondary-button">
-                📖 How to Play
-            </a>
+                    <label for="player_name">
+                        Detective Name
+                    </label>
+
+                    <input
+                        id="player_name"
+                        type="text"
+                        name="player_name"
+                        placeholder="Enter your detective name"
+                        maxlength="25"
+                        autocomplete="off"
+                        required
+                    >
+
+
+                    <!-- ROOM -->
+
+                    <label for="room_name">
+                        Choose Room
+                    </label>
+
+                    <select
+                        id="room_name"
+                        name="room_name"
+                    >
+
+                        <option value="Laboratory">
+                            🧪 Laboratory
+                        </option>
+
+                        <option value="Library">
+                            📚 Old Library
+                        </option>
+
+                        <option value="Detective Office">
+                            🕵️ Detective Office
+                        </option>
+
+                    </select>
+
+
+                    <!-- LIGHT MODE -->
+
+                    <label>
+                        Room Lighting
+                    </label>
+
+                    <select
+                        name="mode"
+                        id="mode"
+                    >
+
+                        <option value="light">
+                            ☀️ Light Mode
+                        </option>
+
+                        <option value="dark">
+                            🌙 Dark Mode
+                        </option>
+
+                    </select>
+
+
+                    <!-- START -->
+
+                    <button type="submit">
+                        ▶ START MYSTERY
+                    </button>
+
+                </form>
+
+
+                <!-- HOW TO PLAY -->
+
+                <a
+                    href="{{ url_for('how_to_play') }}"
+                    class="secondary-button"
+                >
+                    📖 How to Play
+                </a>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LEADERBOARD
+            ================================================== -->
+
+            <div class="home-leaderboard">
+
+                <h2>
+                    🏆 LEADERBOARD
+                </h2>
+
+                <p class="home-leaderboard-subtitle">
+                    Top detectives
+                </p>
+
+
+                <div class="leaderboard-list">
+
+
+                    {% if leaderboard %}
+
+                        {% for player in leaderboard %}
+
+                            <div class="leaderboard-row">
+
+                                <div class="leaderboard-rank">
+
+                                    {% if loop.index == 1 %}
+                                        🥇
+                                    {% elif loop.index == 2 %}
+                                        🥈
+                                    {% elif loop.index == 3 %}
+                                        🥉
+                                    {% else %}
+                                        {{ loop.index }}
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="leaderboard-player">
+
+                                    <strong>
+                                        {{ player["player_name"] }}
+                                    </strong>
+
+                                    <span>
+
+                                        {% if player["room_name"] %}
+                                            {{ player["room_name"] }}
+                                        {% else %}
+                                            Laboratory
+                                        {% endif %}
+
+                                        •
+                                        {{ player["hints_used"] }} hints
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="leaderboard-score">
+
+                                    {{ player["score"] }}
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="no-scores">
+
+                            <div style="font-size: 40px;">
+                                🕵️
+                            </div>
+
+                            <p>
+                                No detectives yet.
+                            </p>
+
+                            <p>
+                                Be the first to escape!
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
 
         </div>
 
     </div>
+
+
+    <script>
+
+        const roomSelect =
+            document.getElementById("room_name");
+
+        const modeSelect =
+            document.getElementById("mode");
+
+
+        roomSelect.addEventListener(
+            "change",
+            function () {
+
+                document.body.dataset.room =
+                    this.value;
+
+            }
+        );
+
+
+        modeSelect.addEventListener(
+            "change",
+            function () {
+
+                document.body.dataset.mode =
+                    this.value;
+
+            }
+        );
+
+
+        window.addEventListener(
+            "pageshow",
+            function () {
+
+                const playerInput =
+                    document.getElementById("player_name");
+
+                if (playerInput) {
+
+                    playerInput.focus();
+
+                }
+
+            }
+        );
+
+    </script>
 
 </body>
 

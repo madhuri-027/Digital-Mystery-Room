@@ -174,12 +174,12 @@ function createRandomPuzzleSet() {
         mountains: randomNumber(1, 9)
     };
 
-    const paintingOrder = shuffle([
-        "sun",
+    const paintingOrder = [
         "clouds",
         "trees",
+        "sun",
         "mountains"
-    ]);
+    ];
 
     const paintingItems =
         paintingOrder.map(name => ({
@@ -539,21 +539,21 @@ let puzzleSet =
 const missionData = [
 
     {
-        title: "Find the painting",
+    title: "Find the painting",
 
-        hints: [
-            "Look at the nature painting on the left wall.",
-            "The scene contains several repeated objects.",
-            "Do not assume the numbers from your previous game are the same.",
-            "Count the objects and follow the order shown by the clue."
-        ],
+    hints: [
+        "Go to the painting on the left wall.",
+        "Interact with the painting to begin.",
+        "Solve the 3×3 puzzle.",
+        "The solved puzzle reveals the access code."
+    ],
 
-        clues: [
-            "🧮 LOGIC: COUNTING",
-            "Count the objects shown in the painting.",
-            "The categories may appear in a different order this time.",
-            "Enter the four counts in the displayed order."
-        ]
+    clues: [
+        "🧩 Solve the 3×3 painting puzzle.",
+        "Arrange all pieces into the correct picture.",
+        "The blank space helps you move the pieces.",
+        "After solving it, use the access code."
+    ]
     },
 
     {
@@ -715,7 +715,6 @@ document.body.appendChild(
     renderer.domElement
 );
 
-
 /* =====================================================
    LIGHTING
 ===================================================== */
@@ -724,18 +723,19 @@ const hemisphereLight =
     new THREE.HemisphereLight(
         0xffffff,
         0x8b9a9e,
-        3
+        3.5
     );
 
 scene.add(
     hemisphereLight
 );
 
+
 const ceilingLight =
     new THREE.PointLight(
         0xffffff,
-        7,
-        25
+        10,
+        30
     );
 
 ceilingLight.position.set(
@@ -750,11 +750,12 @@ scene.add(
     ceilingLight
 );
 
+
 const leftLight =
     new THREE.PointLight(
         0xffffff,
-        4,
-        18
+        6,
+        22
     );
 
 leftLight.position.set(
@@ -769,11 +770,12 @@ scene.add(
     leftLight
 );
 
+
 const rightLight =
     new THREE.PointLight(
         0xffffff,
-        4,
-        18
+        6,
+        22
     );
 
 rightLight.position.set(
@@ -787,6 +789,178 @@ rightLight.castShadow = true;
 scene.add(
     rightLight
 );
+
+
+/* =====================================================
+   LIGHT / DARK MODE
+===================================================== */
+
+function setRoomLightMode(mode) {
+
+    if (mode === "dark") {
+
+        hemisphereLight.intensity = 0.8;
+
+        ceilingLight.intensity = 2.5;
+
+        leftLight.intensity = 1.5;
+
+        rightLight.intensity = 1.5;
+
+        scene.background.set(
+            0x18202b
+        );
+
+    } else {
+
+        hemisphereLight.intensity = 3.5;
+
+        ceilingLight.intensity = 10;
+
+        leftLight.intensity = 6;
+
+        rightLight.intensity = 6;
+
+        scene.background.set(
+            0xdce8ef
+        );
+    }
+}
+
+
+/* LIGHT BUTTON */
+
+window.addEventListener(
+    "room-light",
+    () => {
+
+        setRoomLightMode("light");
+
+    }
+);
+
+
+/* DARK BUTTON */
+
+window.addEventListener(
+    "room-dark",
+    () => {
+
+        setRoomLightMode("dark");
+
+    }
+);
+
+
+/* INITIAL MODE */
+
+setRoomLightMode(
+    document.body.dataset.mode === "dark"
+        ? "dark"
+        : "light"
+);
+
+/* =====================================================
+   ROOM LIGHT CONTROLS
+===================================================== */
+
+function makeRoomLight() {
+
+    hemisphereLight.intensity = 3;
+
+    ceilingLight.intensity = 7;
+
+    leftLight.intensity = 4;
+
+    rightLight.intensity = 4;
+
+    scene.background.set(
+        0xdce8ef
+    );
+}
+
+
+function makeRoomDark() {
+
+    hemisphereLight.intensity = 0.7;
+
+    ceilingLight.intensity = 1.2;
+
+    leftLight.intensity = 0.6;
+
+    rightLight.intensity = 0.6;
+
+    scene.background.set(
+        0x111827
+    );
+}
+
+
+window.addEventListener(
+    "room-light",
+    function () {
+
+        makeRoomLight();
+
+    }
+);
+
+
+window.addEventListener(
+    "room-dark",
+    function () {
+
+        makeRoomDark();
+
+    }
+);
+rightLight.position.set(
+    7,
+    5,
+    3
+);
+
+rightLight.castShadow = true;
+
+scene.add(
+    rightLight
+);
+
+
+/* =====================================================
+   LIGHT / DARK CONTROL
+===================================================== */
+
+function setRoomLight() {
+
+    hemisphereLight.intensity = 3;
+
+    ceilingLight.intensity = 7;
+
+    leftLight.intensity = 4;
+
+    rightLight.intensity = 4;
+
+    scene.background.set(
+        0xdce8ef
+    );
+}
+
+
+function setRoomDark() {
+
+    hemisphereLight.intensity = 0.8;
+
+    ceilingLight.intensity = 1.5;
+
+    leftLight.intensity = 0.7;
+
+    rightLight.intensity = 0.7;
+
+    scene.background.set(
+        0x111827
+    );
+}
 
 
 /* =====================================================
@@ -1427,338 +1601,252 @@ function drawTree(
 }
 
 
-function drawRandomPainting() {
+function drawRandomPainting(ctx, width, height, puzzle) {
+    ctx.clearRect(0, 0, width, height);
 
-    const ctx =
-        paintingContext;
+    // SKY
+    const sky = ctx.createLinearGradient(0, 0, 0, height);
+    sky.addColorStop(0, "#87CEEB");
+    sky.addColorStop(1, "#DFF6FF");
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, width, height);
 
-    ctx.clearRect(
-        0,
-        0,
-        1200,
-        800
-    );
+    // SUN
 
+ctx.beginPath();
 
-    /* SKY */
+ctx.arc(
+    1000,
+    100,
+    45,
+    0,
+    Math.PI * 2
+);
 
-    const skyGradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            800
-        );
+ctx.fillStyle = "#FFD93D";
+ctx.fill();
 
-    skyGradient.addColorStop(
-        0,
-        "#238bd1"
-    );
-
-    skyGradient.addColorStop(
-        0.45,
-        "#79cbed"
-    );
-
-    skyGradient.addColorStop(
-        1,
-        "#dff7ff"
-    );
-
-    ctx.fillStyle =
-        skyGradient;
-
-    ctx.fillRect(
-        0,
-        0,
-        1200,
-        800
-    );
+ctx.strokeStyle = "#F4B400";
+ctx.lineWidth = 4;
+ctx.stroke();
 
 
-    /* SUN */
+// CLOUDS
 
-    const sunX =
-        100 +
-        paintingCountsSafe(
-            puzzleSet.paintingCounts.sun,
-            1,
-            8
-        );
+const cloudPositions = [
+    [150, 100],
+    [450, 150],
+    [750, 90],
+    [950, 200]
+];
 
-    const sunY = 145;
+for (const [x, y] of cloudPositions) {
+
+    ctx.fillStyle = "#FFFFFF";
 
     ctx.beginPath();
 
     ctx.arc(
-        sunX,
-        sunY,
-        65,
+        x,
+        y,
+        28,
         0,
         Math.PI * 2
     );
 
-    ctx.fillStyle =
-        "#ffd84d";
-
-    ctx.fill();
-
-
-    /* CLOUDS */
-
-    const cloudPositions = [
-        [100, 150],
-        [420, 120],
-        [720, 165],
-        [970, 115],
-        [280, 230],
-        [820, 230],
-        [570, 260],
-        [1060, 270],
-        [150, 300]
-    ];
-
-    for (
-        let i = 0;
-        i < puzzleSet.paintingCounts.clouds;
-        i++
-    ) {
-        const position =
-            cloudPositions[i];
-
-        drawCloud(
-            ctx,
-            position[0],
-            position[1],
-            0.65 +
-                (i % 3) * 0.12
-        );
-    }
-
-
-    /* MOUNTAINS */
-
-    ctx.beginPath();
-
-    const mountainPositions = [
-        80,
-        280,
-        500,
-        720,
-        930,
-        1120,
-        200,
-        410,
-        640
-    ];
-
-    for (
-        let i = 0;
-        i < puzzleSet.paintingCounts.mountains;
-        i++
-    ) {
-        const x =
-            mountainPositions[i];
-
-        const y =
-            280 +
-            (i % 3) * 55;
-
-        if (i === 0) {
-            ctx.moveTo(
-                0,
-                500
-            );
-        }
-
-        ctx.lineTo(
-            x,
-            y
-        );
-
-        ctx.lineTo(
-            x + 140,
-            500
-        );
-    }
-
-    ctx.lineTo(
-        1200,
-        800
-    );
-
-    ctx.lineTo(
+    ctx.arc(
+        x + 35,
+        y - 15,
+        35,
         0,
-        800
+        Math.PI * 2
     );
 
-    ctx.closePath();
-
-    ctx.fillStyle =
-        "#52736b";
-
-    ctx.fill();
-
-
-    /* GREEN HILLS */
-
-    ctx.beginPath();
-
-    ctx.moveTo(
+    ctx.arc(
+        x + 75,
+        y,
+        28,
         0,
-        500
+        Math.PI * 2
     );
 
-    ctx.quadraticCurveTo(
-        220,
-        405,
-        450,
-        505
-    );
-
-    ctx.quadraticCurveTo(
-        750,
-        400,
-        1200,
-        500
-    );
-
-    ctx.lineTo(
-        1200,
-        800
-    );
-
-    ctx.lineTo(
+    ctx.arc(
+        x + 40,
+        y + 12,
+        32,
         0,
-        800
+        Math.PI * 2
     );
-
-    ctx.closePath();
-
-    ctx.fillStyle =
-        "#438b42";
 
     ctx.fill();
-
-
-    /* RIVER */
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        510,
-        450
-    );
-
-    ctx.bezierCurveTo(
-        410,
-        530,
-        700,
-        570,
-        530,
-        800
-    );
-
-    ctx.lineTo(
-        850,
-        800
-    );
-
-    ctx.bezierCurveTo(
-        780,
-        650,
-        650,
-        555,
-        690,
-        450
-    );
-
-    ctx.closePath();
-
-    ctx.fillStyle =
-        "#42b9e8";
-
-    ctx.fill();
-
-
-    /* TREES */
-
-    const treePositions = [
-        [100, 485],
-        [1080, 480],
-        [930, 555],
-        [260, 550],
-        [750, 520],
-        [390, 590],
-        [1160, 560],
-        [600, 570],
-        [820, 610]
-    ];
-
-    for (
-        let i = 0;
-        i < puzzleSet.paintingCounts.trees;
-        i++
-    ) {
-
-        const position =
-            treePositions[i];
-
-        drawTree(
-            ctx,
-            position[0],
-            position[1],
-            0.65 +
-                (i % 3) * 0.2
-        );
-    }
-
-
-    /* PAINTING INSTRUCTION */
-
-    ctx.fillStyle =
-        "rgba(255,255,255,0.92)";
-
-    ctx.fillRect(
-        250,
-        650,
-        700,
-        95
-    );
-
-    ctx.fillStyle =
-        "#1e293b";
-
-    ctx.font =
-        "bold 30px Arial";
-
-    ctx.textAlign =
-        "center";
-
-    ctx.fillText(
-        "LOGIC: COUNT THE SCENE",
-        600,
-        690
-    );
-
-    ctx.font =
-        "23px Arial";
-
-    const orderText =
-        puzzleSet.paintingItems
-            .map(
-                item =>
-                    item.name.toUpperCase()
-            )
-            .join("  →  ");
-
-    ctx.fillText(
-        orderText,
-        600,
-        725
-    );
 }
 
+
+// THREE MOUNTAINS
+
+const mountainPositions = [
+    100,
+    500,
+    900
+];
+
+for (const x of mountainPositions) {
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x - 160,
+        470
+    );
+
+    ctx.lineTo(
+        x,
+        280
+    );
+
+    ctx.lineTo(
+        x + 160,
+        470
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle = "#607D8B";
+
+    ctx.fill();
+
+
+    // SNOW
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x,
+        280
+    );
+
+    ctx.lineTo(
+        x - 45,
+        340
+    );
+
+    ctx.lineTo(
+        x - 15,
+        325
+    );
+
+    ctx.lineTo(
+        x,
+        350
+    );
+
+    ctx.lineTo(
+        x + 18,
+        325
+    );
+
+    ctx.lineTo(
+        x + 48,
+        340
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle = "#FFFFFF";
+
+    ctx.fill();
+}
+
+
+    // GREEN GROUND
+
+    ctx.fillStyle = "#7CB342";
+
+    ctx.fillRect(
+        0,
+        470,
+        width,
+        height - 470
+    );
+
+
+    // ONE RIVER
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        500,
+        470
+    );
+
+    ctx.bezierCurveTo(
+        450,
+        540,
+        650,
+        590,
+        500,
+        800
+    );
+
+    ctx.lineTo(
+        720,
+        800
+    );
+
+    ctx.bezierCurveTo(
+        820,
+        590,
+        620,
+        540,
+        680,
+        470
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle = "#42A5F5";
+
+    ctx.fill();
+
+
+    // RIVER HIGHLIGHT
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        590,
+        480
+    );
+
+    ctx.bezierCurveTo(
+        550,
+        560,
+        700,
+        620,
+        590,
+        790
+    );
+
+    ctx.strokeStyle = "#90CAF9";
+
+    ctx.lineWidth = 7;
+
+    ctx.stroke();
+
+
+    // BORDER
+
+    ctx.strokeStyle = "#5D4037";
+
+    ctx.lineWidth = 18;
+
+    ctx.strokeRect(
+        5,
+        5,
+        width - 10,
+        height - 10
+    );
+}
 
 function paintingCountsSafe(
     value,
@@ -1775,7 +1863,12 @@ function paintingCountsSafe(
 }
 
 
-drawRandomPainting();
+drawRandomPainting(
+    paintingContext,
+    paintingCanvas.width,
+    paintingCanvas.height,
+    puzzleSet
+);
 
 
 /* =====================================================
@@ -3675,6 +3768,22 @@ function showMessage(message) {
    MISSION UI
 ===================================================== */
 
+const missionsButton =
+    document.getElementById(
+        "missions-button"
+    );
+
+const missionsPanel =
+    document.getElementById(
+        "missions-panel"
+    );
+
+const missionsClose =
+    document.getElementById(
+        "missions-close"
+    );
+
+
 const missionHintButton =
     document.getElementById(
         "mission-hint-button"
@@ -3696,6 +3805,50 @@ const missionHelpText =
     );
 
 
+/* =====================================================
+   OPEN MISSIONS
+===================================================== */
+
+if (
+    missionsButton &&
+    missionsPanel
+) {
+
+    missionsButton.onclick =
+        () => {
+
+            missionsPanel.style.display =
+                "block";
+
+            updateMissionUI(
+                false
+            );
+        };
+}
+
+
+/* =====================================================
+   CLOSE MISSIONS
+===================================================== */
+
+if (
+    missionsClose &&
+    missionsPanel
+) {
+
+    missionsClose.onclick =
+        () => {
+
+            missionsPanel.style.display =
+                "none";
+        };
+}
+
+
+/* =====================================================
+   UPDATE MISSION UI
+===================================================== */
+
 function updateMissionUI(
     resetHelp = false
 ) {
@@ -3715,8 +3868,8 @@ function updateMissionUI(
             `
             Current Mission:
             <strong>
-            ${gameState.activeMission}.
-            ${mission.title}
+                ${gameState.activeMission}.
+                ${mission.title}
             </strong>
             `;
     }
@@ -3733,6 +3886,7 @@ function updateMissionUI(
                 `mission-${i}`
             );
 
+
         if (!missionElement) {
             continue;
         }
@@ -3742,6 +3896,7 @@ function updateMissionUI(
             missionElement.querySelector(
                 ".mission-check"
             );
+
 
         const title =
             missionElement.querySelector(
@@ -3763,9 +3918,13 @@ function updateMissionUI(
                 "locked"
             );
 
+
             if (check) {
-                check.textContent = "☑";
+
+                check.textContent =
+                    "☑";
             }
+
 
             if (title) {
 
@@ -3775,7 +3934,9 @@ function updateMissionUI(
                     ].title;
             }
 
-        } else if (
+        }
+
+        else if (
             i >
             gameState.activeMission
         ) {
@@ -3784,9 +3945,18 @@ function updateMissionUI(
                 "locked"
             );
 
+
+            missionElement.classList.remove(
+                "completed"
+            );
+
+
             if (check) {
-                check.textContent = "🔒";
+
+                check.textContent =
+                    "🔒";
             }
+
 
             if (title) {
 
@@ -3796,7 +3966,9 @@ function updateMissionUI(
                     ].title;
             }
 
-        } else {
+        }
+
+        else {
 
             missionElement.classList.remove(
                 "locked"
@@ -3806,9 +3978,13 @@ function updateMissionUI(
                 "completed"
             );
 
+
             if (check) {
-                check.textContent = "☐";
+
+                check.textContent =
+                    "☐";
             }
+
 
             if (title) {
 
@@ -3832,7 +4008,13 @@ function updateMissionUI(
 }
 
 
-if (missionHintButton) {
+/* =====================================================
+   HINT BUTTON
+===================================================== */
+
+if (
+    missionHintButton
+) {
 
     missionHintButton.onclick =
         () => {
@@ -3844,7 +4026,13 @@ if (missionHintButton) {
 }
 
 
-if (missionClueButton) {
+/* =====================================================
+   CLUE BUTTON
+===================================================== */
+
+if (
+    missionClueButton
+) {
 
     missionClueButton.onclick =
         () => {
@@ -3854,6 +4042,15 @@ if (missionClueButton) {
             );
         };
 }
+
+
+/* =====================================================
+   INITIAL MISSION DISPLAY
+===================================================== */
+
+updateMissionUI(
+    true
+);
 
 
 /* =====================================================
@@ -4076,158 +4273,364 @@ function updateCounters() {
 
 function showPainting() {
 
-    if (
-        gameState.paintingStep === 0
-    ) {
+    if (gameState.paintingStep === 0) {
 
-        const orderText =
-            puzzleSet.paintingItems
-                .map(
-                    item =>
-                        item.name
-                            .toUpperCase()
+        const image =
+            paintingCanvas.toDataURL("image/png");
+
+        openModal(`
+            <style>
+
+                .slide-puzzle {
+                    width: 330px;
+                    height: 330px;
+                    margin: 20px auto;
+                    padding: 5px;
+
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-rows: repeat(3, 1fr);
+                    gap: 5px;
+
+                    background: #111827;
+                    border-radius: 14px;
+                }
+
+                .slide-tile {
+                    border: none;
+                    border-radius: 8px;
+
+                    background-image: url('${image}');
+                    background-size: 300% 300%;
+                    background-repeat: no-repeat;
+
+                    cursor: pointer;
+
+                    transition: transform 0.12s ease;
+                }
+
+                .slide-tile:hover {
+                    transform: scale(0.96);
+                }
+
+                .slide-tile.blank {
+                    background: #1f2937;
+                    cursor: default;
+                }
+
+                .puzzle-title {
+                    text-align: center;
+                    font-size: 25px;
+                    font-weight: 800;
+                    margin-bottom: 5px;
+                }
+
+                .puzzle-subtitle {
+                    text-align: center;
+                    color: #64748b;
+                    margin-bottom: 12px;
+                }
+
+                .puzzle-moves {
+                    text-align: center;
+                    font-weight: 700;
+                    margin: 10px;
+                }
+
+                .puzzle-code {
+                    margin-top: 18px;
+                    padding: 18px;
+                    border-radius: 12px;
+
+                    background: #ecfdf5;
+                    border: 2px solid #22c55e;
+
+                    text-align: center;
+                }
+
+                .access-code {
+                    margin: 10px 0;
+
+                    font-size: 34px;
+                    font-weight: 900;
+                    letter-spacing: 8px;
+
+                    color: #166534;
+                }
+
+            </style>
+
+            <h2 class="puzzle-title">
+                🧩 Painting Puzzle
+            </h2>
+
+            <p class="puzzle-subtitle">
+                Arrange the pieces to restore the painting.
+            </p>
+
+            <div
+                id="slide-puzzle"
+                class="slide-puzzle">
+            </div>
+
+            <div class="puzzle-moves">
+                Moves:
+                <span id="slide-moves">0</span>
+            </div>
+
+            <div id="puzzle-result"></div>
+        `);
+
+        const puzzle =
+            document.getElementById(
+                "slide-puzzle"
+            );
+
+        const movesElement =
+            document.getElementById(
+                "slide-moves"
+            );
+
+        const result =
+            document.getElementById(
+                "puzzle-result"
+            );
+
+        let tiles = [
+            0, 1, 2,
+            3, 4, 5,
+            6, 7, 8
+        ];
+
+        let moves = 0;
+
+
+        function isAdjacent(a, b) {
+
+            const rowA =
+                Math.floor(a / 3);
+
+            const colA =
+                a % 3;
+
+            const rowB =
+                Math.floor(b / 3);
+
+            const colB =
+                b % 3;
+
+            return (
+                Math.abs(rowA - rowB) +
+                Math.abs(colA - colB)
+            ) === 1;
+        }
+
+
+        function shufflePuzzle() {
+
+            let blank = 8;
+
+            for (let i = 0; i < 100; i++) {
+
+                const possible = [];
+
+                for (let j = 0; j < 9; j++) {
+
+                    if (
+                        j !== blank &&
+                        isAdjacent(j, blank)
+                    ) {
+                        possible.push(j);
+                    }
+                }
+
+                const selected =
+                    possible[
+                        Math.floor(
+                            Math.random() *
+                            possible.length
+                        )
+                    ];
+
+                [
+                    tiles[selected],
+                    tiles[blank]
+                ] = [
+                    tiles[blank],
+                    tiles[selected]
+                ];
+
+                blank = selected;
+            }
+        }
+
+
+        function renderPuzzle() {
+
+            puzzle.innerHTML = "";
+
+            tiles.forEach(
+                (tileNumber, position) => {
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+                    button.className =
+                        "slide-tile";
+
+
+                    if (tileNumber === 8) {
+
+                        button.classList.add(
+                            "blank"
+                        );
+
+                    } else {
+
+                        const row =
+                            Math.floor(
+                                tileNumber / 3
+                            );
+
+                        const col =
+                            tileNumber % 3;
+
+                        button.style.backgroundPosition =
+                            `${col * 50}% ${row * 50}%`;
+
+                        button.onclick =
+                            () => moveTile(
+                                position
+                            );
+                    }
+
+                    puzzle.appendChild(
+                        button
+                    );
+                }
+            );
+        }
+
+
+        function moveTile(position) {
+
+            const blank =
+                tiles.indexOf(8);
+
+            if (
+                !isAdjacent(
+                    position,
+                    blank
                 )
-                .join(
-                    " → "
+            ) {
+                return;
+            }
+
+            [
+                tiles[position],
+                tiles[blank]
+            ] = [
+                tiles[blank],
+                tiles[position]
+            ];
+
+            moves++;
+
+            movesElement.textContent =
+                moves;
+
+            renderPuzzle();
+
+            checkSolved();
+        }
+
+
+        function checkSolved() {
+
+            const solved =
+                tiles.every(
+                    (value, index) =>
+                        value === index
                 );
 
+            if (!solved) {
+                return;
+            }
+
+
+            gameState.paintingStep = 1;
+
+            gameState.puzzles++;
+
+
+            result.innerHTML = `
+
+                <div class="puzzle-code">
+
+                    <strong>
+                        🎉 PUZZLE SOLVED!
+                    </strong>
+
+                    <br><br>
+
+                    ACCESS CODE
+
+                    <div class="access-code">
+                        ${puzzleSet.paintingCode}
+                    </div>
+
+                    <p>
+                        🔓 Bookshelf access unlocked.
+                    </p>
+
+                    <p>
+                        Use this code at the bookshelf.
+                    </p>
+
+                </div>
+
+            `;
+
+            completeMission(1);
+        }
+
+
+        shufflePuzzle();
+
+        renderPuzzle();
+    }
+
+    else {
 
         openModal(`
 
-            <h2>🖼️ Nature Painting</h2>
-
-            <p>
-                A new scene has been generated.
-                Count the objects carefully.
-            </p>
+            <h2>
+                🧩 Painting Puzzle
+            </h2>
 
             <div class="clue-box">
-
-                🧮 LOGIC: COUNT THE SCENE
-
-                <br><br>
-
-                COUNT IN THIS ORDER:
-
-                <br><br>
-
-                <strong>
-                    ${orderText}
-                </strong>
-
+                🔓 Painting already solved.
             </div>
 
             <p>
-                Enter the four counts in that order.
+                Access code:
             </p>
 
-            <input
-                id="puzzle-answer"
-                class="puzzle-input"
-                placeholder="Enter 4 digit code"
-                maxlength="4"
-            >
+            <div class="clue-box">
+                <strong>
+                    ${puzzleSet.paintingCode}
+                </strong>
+            </div>
 
-            <button
-                id="submit-puzzle"
-                class="puzzle-button"
-            >
-                Submit
-            </button>
+            <p>
+                Go to the bookshelf.
+            </p>
 
-            <div
-                id="puzzle-result"
-                class="puzzle-result"
-            ></div>
         `);
-
-
-        document
-            .getElementById(
-                "submit-puzzle"
-            )
-            .onclick =
-            () => {
-
-                const answer =
-                    document
-                    .getElementById(
-                        "puzzle-answer"
-                    )
-                    .value
-                    .trim();
-
-
-                const result =
-                    document
-                    .getElementById(
-                        "puzzle-result"
-                    );
-
-
-                if (
-                    answer ===
-                    puzzleSet.paintingCode
-                ) {
-
-                    gameState.paintingStep =
-                        1;
-
-                    gameState.puzzles++;
-
-
-                    result.innerHTML =
-                        `
-                        ✅ Painting solved!
-
-                        <br><br>
-
-                        Correct code:
-
-                        <strong>
-                            ${puzzleSet.paintingCode}
-                        </strong>
-
-                        <br><br>
-
-                        The bookshelf contains
-                        the next puzzle.
-                        `;
-
-
-                    completeMission(1);
-
-                } else {
-
-                    result.innerHTML =
-                        `
-                        ❌ Wrong answer.
-
-                        <br><br>
-
-                        Count the scene again
-                        and follow the requested order.
-                        `;
-                }
-            };
-
-        return;
     }
-
-
-    openModal(`
-        <h2>🖼️ Painting Clue</h2>
-
-        <div class="clue-box">
-            ${puzzleSet.paintingCode}
-        </div>
-
-        <p>
-            The painting puzzle has already been solved.
-        </p>
-    `);
 }
-
 
 /* =====================================================
    BOOKSHELF PUZZLE
@@ -4236,12 +4639,144 @@ function showPainting() {
 function showBookshelf() {
 
     if (
-        gameState.activeMission < 2
+        gameState.paintingStep === 0
     ) {
 
         showMessage(
-            "🔒 First solve the painting."
+            "🔒 First solve the painting puzzle."
         );
+
+        return;
+    }
+
+
+    if (
+        gameState.bookshelfAccessGranted !== true
+    ) {
+
+        openModal(`
+
+            <h2>
+                🔐 Bookshelf Locked
+            </h2>
+
+            <p>
+                The painting gave you an access code.
+            </p>
+
+            <p>
+                Enter the code to unlock the bookshelf.
+            </p>
+
+            <input
+                id="access-code-input"
+                class="puzzle-input"
+                placeholder="Enter access code"
+                maxlength="4"
+            >
+
+            <button
+                id="access-code-submit"
+                class="puzzle-button"
+            >
+                🔓 Unlock Bookshelf
+            </button>
+
+            <div
+                id="access-code-result"
+                class="puzzle-result">
+            </div>
+
+        `);
+
+
+        document
+            .getElementById(
+                "access-code-submit"
+            )
+            .onclick = function () {
+
+                const answer =
+                    document
+                    .getElementById(
+                        "access-code-input"
+                    )
+                    .value
+                    .trim();
+
+
+                const result =
+                    document
+                    .getElementById(
+                        "access-code-result"
+                    );
+
+
+                if (
+                    answer ===
+                    String(
+                        puzzleSet.paintingCode
+                    )
+                ) {
+
+                    gameState.bookshelfAccessGranted =
+                        true;
+
+
+                    result.innerHTML = `
+
+                        <div class="puzzle-code">
+
+                            <strong>
+                                ✅ ACCESS GRANTED!
+                            </strong>
+
+                            <br><br>
+
+                            📚 Bookshelf unlocked.
+
+                            <br><br>
+
+                            <button
+                                class="puzzle-button"
+                                id="continue-bookshelf"
+                            >
+                                Continue
+                            </button>
+
+                        </div>
+
+                    `;
+
+
+                    document
+                        .getElementById(
+                            "continue-bookshelf"
+                        )
+                        .onclick = function () {
+
+                            showBookshelf();
+
+                        };
+
+                }
+
+                else {
+
+                    result.innerHTML = `
+
+                        <span style="color:#dc2626;">
+                            ❌ Incorrect access code.
+                        </span>
+
+                        <br><br>
+
+                        Check the code shown
+                        after solving the painting.
+
+                    `;
+                }
+            };
 
         return;
     }
@@ -4253,16 +4788,20 @@ function showBookshelf() {
 
         openModal(`
 
-            <h2>📚 Mystery Bookshelf</h2>
+            <h2>
+                📚 Mystery Bookshelf
+            </h2>
 
             <p>
                 Four books have been marked.
             </p>
 
             <div class="clue-box">
+
                 ${puzzleSet.bookshelfLetters.join(
                     "   "
                 )}
+
             </div>
 
             <p>
@@ -4279,8 +4818,10 @@ function showBookshelf() {
             <input
                 id="puzzle-answer"
                 class="puzzle-input"
-                placeholder="Enter 4 digit code"
-                maxlength="4"
+                placeholder="Enter password"
+                type="text"
+                maxlength="20"
+                autocomplete="off"
             >
 
             <button
@@ -4292,8 +4833,9 @@ function showBookshelf() {
 
             <div
                 id="puzzle-result"
-                class="puzzle-result"
-            ></div>
+                class="puzzle-result">
+            </div>
+
         `);
 
 
@@ -4301,8 +4843,7 @@ function showBookshelf() {
             .getElementById(
                 "submit-puzzle"
             )
-            .onclick =
-            () => {
+            .onclick = function () {
 
                 const answer =
                     document
@@ -4331,9 +4872,12 @@ function showBookshelf() {
                     gameState.puzzles++;
 
 
-                    result.innerHTML =
-                        `
-                        ✅ Bookshelf solved!
+                    result.innerHTML = `
+
+                        ✅
+                        <strong>
+                            Bookshelf solved!
+                        </strong>
 
                         <br><br>
 
@@ -4352,7 +4896,7 @@ function showBookshelf() {
 
                         <br><br>
 
-                        A strange note falls out.
+                        📄 A strange note falls out.
 
                         <br><br>
 
@@ -4364,23 +4908,27 @@ function showBookshelf() {
 
                         <br><br>
 
-                        The drawer may contain the next clue.
-                        `;
+                        The drawer contains the next clue.
+
+                    `;
 
 
                     completeMission(2);
 
-                } else {
+                }
 
-                    result.innerHTML =
-                        `
+                else {
+
+                    result.innerHTML = `
+
                         ❌ Wrong.
 
                         <br><br>
 
                         Convert each marked letter
                         into its alphabet position.
-                        `;
+
+                    `;
                 }
             };
 
@@ -4390,12 +4938,16 @@ function showBookshelf() {
 
     openModal(`
 
-        <h2>📄 Bookshelf Note</h2>
+        <h2>
+            📄 Bookshelf Note
+        </h2>
 
         <div class="clue-box">
+
             ${puzzleSet.drawerRomans.join(
                 " - "
             )}
+
         </div>
 
         <p>
@@ -4404,7 +4956,6 @@ function showBookshelf() {
 
     `);
 }
-
 
 /* =====================================================
    DRAWER PUZZLE
