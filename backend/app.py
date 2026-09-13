@@ -13,7 +13,10 @@ app = Flask(
 
 app.secret_key = "mystery-room-secret"
 
-DATABASE = os.path.join(BASE_DIR, "mystery.db")
+if os.environ.get("VERCEL"):
+    DATABASE = "/tmp/mystery.db"
+else:
+    DATABASE = os.path.join(BASE_DIR, "mystery.db")
 
 PUZZLE_DATABASE = {}
 
@@ -437,3 +440,7 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=5000
     )
+try:
+    create_database()
+except Exception:
+    pass
