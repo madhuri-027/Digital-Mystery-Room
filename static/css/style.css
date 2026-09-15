@@ -777,39 +777,64 @@ canvas {
 
 
 /* =====================================================
-   MOBILE CONTROLS
+   MOBILE GAME CONTROLS
 ===================================================== */
 
 #mobile-controls {
     display: none;
 
     position: fixed;
-
     inset: 0;
 
-    z-index: 150;
+    z-index: 9999;
 
     pointer-events: none;
 }
+
+
+/* =====================================================
+   LEFT JOYSTICK
+===================================================== */
 
 #joystick-zone {
     position: absolute;
 
     left: 22px;
-    bottom: 35px;
+    bottom: 30px;
 
-    width: 145px;
-    height: 145px;
+    width: 135px;
+    height: 135px;
 
     border-radius: 50%;
 
-    background: rgba(0, 0, 0, 0.18);
+    background: rgba(0, 0, 0, 0.35);
 
-    border: 2px solid rgba(255, 255, 255, 0.28);
+    border: 2px solid rgba(255, 255, 255, 0.65);
 
     pointer-events: auto;
 
     touch-action: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#joystick-zone::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 90px;
+    height: 90px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    border: 2px solid rgba(255, 255, 255, 0.25);
 }
 
 #joystick-knob {
@@ -818,44 +843,57 @@ canvas {
     left: 50%;
     top: 50%;
 
-    width: 62px;
-    height: 62px;
+    width: 58px;
+    height: 58px;
 
     transform: translate(-50%, -50%);
 
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.32);
+    background: rgba(255, 255, 255, 0.65);
 
-    border: 2px solid rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.9);
 
     box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.35);
+        0 4px 18px rgba(0, 0, 0, 0.45);
 
     pointer-events: none;
 }
+
+
+/* =====================================================
+   MOBILE LOOK AREA
+===================================================== */
 
 #look-zone {
     position: absolute;
 
     right: 0;
-    top: 80px;
+    top: 90px;
 
-    width: 52%;
-    height: calc(100% - 160px);
+    width: 55%;
+    height: calc(100% - 180px);
 
     pointer-events: auto;
 
     touch-action: none;
 
     background: transparent;
+
+    user-select: none;
+    -webkit-user-select: none;
 }
+
+
+/* =====================================================
+   RIGHT MOVEMENT CONTROLS
+===================================================== */
 
 #direction-controls {
     position: absolute;
 
     right: 25px;
-    bottom: 35px;
+    bottom: 30px;
 
     width: 150px;
 
@@ -870,15 +908,22 @@ canvas {
     pointer-events: auto;
 }
 
+.direction-middle {
+    display: flex;
+
+    gap: 8px;
+}
+
+
 #direction-controls button {
     width: 50px;
     height: 50px;
 
     border-radius: 12px;
 
-    border: 2px solid rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.75);
 
-    background: rgba(20, 30, 45, 0.65);
+    background: rgba(15, 25, 40, 0.72);
 
     color: white;
 
@@ -886,134 +931,69 @@ canvas {
 
     font-weight: bold;
 
-    cursor: pointer;
-
-    touch-action: none;
-
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-.direction-middle {
-    display: flex;
-
-    gap: 8px;
-}
-
-#direction-controls button:active {
-    transform: scale(0.9);
-
-    background: rgba(255, 255, 255, 0.35);
-}
-
-
-/* =====================================================
-   MOBILE ACTION BUTTONS
-===================================================== */
-
-#mobile-action-buttons {
-    position: fixed;
-
-    right: 20px;
-    bottom: 35px;
-
-    display: flex;
-
-    align-items: flex-end;
-
-    gap: 12px;
-
-    z-index: 200;
-
-    pointer-events: auto;
-}
-
-.mobile-action {
-    width: 68px;
-    height: 68px;
-
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
-
-    background: rgba(0, 0, 0, 0.65);
-
-    color: white;
-
-    border: 2px solid rgba(255, 255, 255, 0.75);
-
-    font-size: 14px;
-
-    font-weight: bold;
-
     cursor: pointer;
+
+    pointer-events: auto;
 
     touch-action: none;
 
+    user-select: none;
+    -webkit-user-select: none;
+
     box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.4);
+        0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
-.mobile-action:active {
-    background: rgba(56, 189, 248, 0.65);
 
-    transform: scale(0.94);
+#direction-controls button:active {
+    transform: scale(0.9);
+
+    background: rgba(56, 189, 248, 0.75);
 }
 
 
 /* =====================================================
-   OLD MOVEMENT CONTROLS
+   MOBILE ONLY
 ===================================================== */
 
-#movement-controls {
-    position: fixed;
+@media screen and (max-width: 900px) {
 
-    right: 25px;
-    bottom: 75px;
+    #mobile-controls {
+        display: block !important;
+    }
 
-    display: flex;
+    #pc-controls {
+        display: none !important;
+    }
 
-    flex-direction: column;
-
-    align-items: center;
-
-    gap: 5px;
-
-    z-index: 100;
-
-    pointer-events: auto;
+    #pc-control-hint {
+        display: none !important;
+    }
 }
 
-.side-controls {
-    display: flex;
 
-    gap: 5px;
-}
+/* =====================================================
+   TOUCH DEVICES
+===================================================== */
 
-#movement-controls button {
-    width: 50px;
-    height: 50px;
+@media screen and (pointer: coarse) {
 
-    background: rgba(0, 0, 0, 0.75);
+    #mobile-controls {
+        display: block !important;
+    }
 
-    color: white;
+    #pc-controls {
+        display: none !important;
+    }
 
-    border: 2px solid white;
-
-    border-radius: 8px;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    touch-action: none;
-}
-
-#movement-controls button:active {
-    background: rgba(255, 255, 255, 0.3);
+    #pc-control-hint {
+        display: none !important;
+    }
 }
 
 

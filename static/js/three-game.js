@@ -6461,12 +6461,17 @@ if (joystickZone) {
     );
 
     joystickZone.addEventListener(
-        "pointerleave",
-        function() {
+        "pointerup",
+        function(event) {
+            event.preventDefault();
+            resetJoystick();
+        }
+    );
 
-            if (joystickActive) {
-                resetJoystick();
-            }
+    joystickZone.addEventListener(
+        "pointercancel",
+        function() {
+            resetJoystick();
         }
     );
 }
