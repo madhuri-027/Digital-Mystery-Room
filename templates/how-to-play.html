@@ -6,42 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>How to Play - Digital Mystery Room</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body>
+<body class="how-to-play-page">
 
-    <h1>📖 HOW TO PLAY</h1>
+    <div class="how-to-play-container">
 
-    <h2>Objective</h2>
+        <h1 class="how-to-play-title">
+            📖 HOW TO PLAY
+        </h1>
 
-    <p>
-        Find all the clues, solve the puzzles,
-        and escape from the laboratory before
-        the timer reaches zero.
-    </p>
+        <div class="how-to-play-section">
 
-    <h2>Rules</h2>
+            <h2>Objective</h2>
 
-    <ul>
-        <li>🔍 Click objects to investigate them.</li>
+            <p>
+                Find all the clues, solve the puzzles,
+                and escape from the laboratory before
+                the timer reaches zero.
+            </p>
 
-        <li>🧩 Find clues and solve puzzles.</li>
+        </div>
 
-        <li>🔐 Use codes to unlock objects.</li>
 
-        <li>⏱️ Complete the mystery before time runs out.</li>
+        <div class="how-to-play-section">
 
-        <li>💡 Use hints when you are stuck.</li>
+            <h2>Rules</h2>
 
-        <li>🏆 Solve the mystery quickly to get a higher score.</li>
-    </ul>
+            <ul>
+                <li>🔍 Click objects to investigate them.</li>
 
-    <br>
+                <li>🧩 Find clues and solve puzzles.</li>
 
-    <a href="/">
-        ← Back to Home
-    </a>
+                <li>🔐 Use codes to unlock objects.</li>
+
+                <li>⏱️ Complete the mystery before time runs out.</li>
+
+                <li>💡 Use hints when you are stuck.</li>
+
+                <li>🏆 Solve the mystery quickly to get a higher score.</li>
+            </ul>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('home') }}"
+            class="how-to-play-back">
+            ← Back to Home
+        </a>
+
+    </div>
 
 </body>
 

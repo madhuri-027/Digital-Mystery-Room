@@ -435,7 +435,9 @@ canvas {
 
 .player-info {
     display: flex;
+
     align-items: center;
+
     gap: 10px;
 
     min-width: 0;
@@ -443,7 +445,9 @@ canvas {
 
 .player-info span {
     overflow: hidden;
+
     text-overflow: ellipsis;
+
     white-space: nowrap;
 }
 
@@ -619,7 +623,9 @@ canvas {
     height: 36px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     background: none;
@@ -771,10 +777,12 @@ canvas {
 
 
 /* =====================================================
-   MOBILE TOUCH JOYSTICK
+   MOBILE CONTROLS
 ===================================================== */
 
 #mobile-controls {
+    display: none;
+
     position: fixed;
 
     inset: 0;
@@ -813,8 +821,7 @@ canvas {
     width: 62px;
     height: 62px;
 
-    margin-left: -31px;
-    margin-top: -31px;
+    transform: translate(-50%, -50%);
 
     border-radius: 50%;
 
@@ -835,7 +842,6 @@ canvas {
     top: 80px;
 
     width: 52%;
-
     height: calc(100% - 160px);
 
     pointer-events: auto;
@@ -843,6 +849,61 @@ canvas {
     touch-action: none;
 
     background: transparent;
+}
+
+#direction-controls {
+    position: absolute;
+
+    right: 25px;
+    bottom: 35px;
+
+    width: 150px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 8px;
+
+    pointer-events: auto;
+}
+
+#direction-controls button {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 12px;
+
+    border: 2px solid rgba(255, 255, 255, 0.7);
+
+    background: rgba(20, 30, 45, 0.65);
+
+    color: white;
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    touch-action: none;
+
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.direction-middle {
+    display: flex;
+
+    gap: 8px;
+}
+
+#direction-controls button:active {
+    transform: scale(0.9);
+
+    background: rgba(255, 255, 255, 0.35);
 }
 
 
@@ -872,6 +933,7 @@ canvas {
     height: 68px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -904,7 +966,6 @@ canvas {
 
 /* =====================================================
    OLD MOVEMENT CONTROLS
-   Kept for compatibility with current JS
 ===================================================== */
 
 #movement-controls {
@@ -1062,6 +1123,128 @@ canvas {
     font-size: 28px;
 
     cursor: pointer;
+}
+
+
+/* =====================================================
+   PC CONTROLS INSIDE SETTINGS
+===================================================== */
+
+#pc-controls {
+    position: static !important;
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    margin-top: 20px !important;
+
+    padding: 16px !important;
+
+    background: rgba(15, 23, 42, 0.95) !important;
+
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+
+    border-radius: 12px !important;
+
+    color: white !important;
+
+    display: block !important;
+
+    text-align: center !important;
+
+    box-sizing: border-box !important;
+
+    z-index: auto !important;
+}
+
+#pc-controls .pc-controls-title {
+    display: block !important;
+
+    width: 100% !important;
+
+    margin: 0 0 14px 0 !important;
+
+    padding: 0 !important;
+
+    text-align: center !important;
+
+    color: #38bdf8 !important;
+
+    font-size: 15px !important;
+
+    font-weight: 800 !important;
+}
+
+#pc-controls .pc-control-line {
+    width: 100% !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: space-between !important;
+
+    margin: 9px 0 !important;
+
+    padding: 0 !important;
+
+    font-size: 13px !important;
+
+    line-height: 20px !important;
+}
+
+#pc-controls .pc-control-line strong {
+    color: #38bdf8 !important;
+
+    font-weight: 800 !important;
+
+    white-space: nowrap !important;
+}
+
+#pc-controls .pc-control-line span {
+    color: #cbd5e1 !important;
+
+    text-align: right !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* =====================================================
+   PC CONTROL HINT
+===================================================== */
+
+#pc-control-hint {
+    position: fixed !important;
+
+    left: 50% !important;
+
+    right: auto !important;
+
+    top: auto !important;
+
+    bottom: 25px !important;
+
+    transform: translateX(-50%) !important;
+
+    color: #38bdf8 !important;
+
+    background: rgba(0, 0, 0, 0.65) !important;
+
+    padding: 10px 20px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 16px !important;
+
+    font-weight: 700 !important;
+
+    text-align: center !important;
+
+    z-index: 9999 !important;
+
+    white-space: nowrap !important;
 }
 
 
@@ -1519,7 +1702,6 @@ body.dark-mode {
 ===================================================== */
 
 @keyframes resultAppear {
-
     from {
         opacity: 0;
 
@@ -1567,6 +1749,147 @@ body.dark-mode {
 
 
 /* =====================================================
+   HOW TO PLAY PAGE
+===================================================== */
+
+.how-to-play-page {
+    min-height: 100vh;
+
+    margin: 0;
+
+    padding: 40px 20px;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #263b52 0%,
+            #111827 45%,
+            #050b14 100%
+        );
+
+    color: #ffffff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+.how-to-play-container {
+    max-width: 950px;
+
+    margin: 0 auto;
+
+    background: rgba(15, 23, 42, 0.88);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 22px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
+
+    backdrop-filter: blur(10px);
+}
+
+.how-to-play-title {
+    margin-top: 0;
+
+    margin-bottom: 35px;
+
+    font-size: 42px;
+
+    color: #ffffff;
+
+    text-align: center;
+}
+
+.how-to-play-section {
+    margin-bottom: 30px;
+
+    padding: 25px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.how-to-play-section h2 {
+    margin-top: 0;
+
+    margin-bottom: 15px;
+
+    font-size: 26px;
+
+    color: #38bdf8;
+}
+
+.how-to-play-section p {
+    margin: 0;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    color: #e5e7eb;
+}
+
+.how-to-play-section ul {
+    margin: 0;
+
+    padding-left: 25px;
+}
+
+.how-to-play-section li {
+    margin-bottom: 13px;
+
+    font-size: 17px;
+
+    line-height: 1.5;
+
+    color: #e5e7eb;
+}
+
+.how-to-play-section li::marker {
+    color: #38bdf8;
+}
+
+.how-to-play-back {
+    display: inline-block;
+
+    margin-top: 10px;
+
+    padding: 12px 22px;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    transition: 0.2s ease;
+}
+
+.how-to-play-back:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
    TABLET
 ===================================================== */
 
@@ -1586,12 +1909,18 @@ body.dark-mode {
 
     .game-action-buttons {
         top: 75px;
+
         right: 15px;
     }
 
     .top-bar {
         padding: 8px 14px;
     }
+
+    #pc-controls {
+        display: block !important;
+    }
+
 }
 
 
@@ -1599,11 +1928,12 @@ body.dark-mode {
    MOBILE
 ===================================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
     html,
     body {
         width: 100%;
+
         min-height: 100%;
     }
 
@@ -1671,6 +2001,7 @@ body.dark-mode {
 
     .leaderboard-rank {
         width: 30px;
+
         height: 30px;
 
         font-size: 13px;
@@ -1706,6 +2037,7 @@ body.dark-mode {
 
     #missions-button {
         top: 63px;
+
         left: 10px;
 
         min-height: 42px;
@@ -1717,6 +2049,7 @@ body.dark-mode {
 
     #missions-panel {
         top: 112px;
+
         left: 10px;
 
         width: calc(100vw - 20px);
@@ -1735,6 +2068,7 @@ body.dark-mode {
 
     .game-action-buttons {
         top: 62px;
+
         right: 10px;
 
         gap: 5px;
@@ -1757,40 +2091,47 @@ body.dark-mode {
     }
 
 
-    /* MOBILE JOYSTICK */
+    /* MOBILE CONTROLS */
+
+    #mobile-controls {
+        display: block;
+    }
 
     #joystick-zone {
         left: 18px;
+
         bottom: 24px;
 
         width: 125px;
+
         height: 125px;
     }
 
     #joystick-knob {
         width: 55px;
+
         height: 55px;
 
-        margin-left: -27.5px;
-        margin-top: -27.5px;
+        margin: 0;
+
+        transform: translate(-50%, -50%);
     }
 
-    #mobile-action-buttons {
+    #direction-controls {
         right: 18px;
+
         bottom: 24px;
 
-        gap: 8px;
+        display: flex;
     }
 
-    .mobile-action {
-        width: 62px;
-        height: 62px;
+    #direction-controls button {
+        width: 50px;
 
-        font-size: 12px;
+        height: 50px;
+
+        font-size: 25px;
     }
-
-
-    /* LOOK AREA */
 
     #look-zone {
         top: 65px;
@@ -1798,6 +2139,33 @@ body.dark-mode {
         height: calc(100% - 135px);
 
         width: 55%;
+    }
+
+    #mobile-action-buttons {
+        right: 18px;
+
+        bottom: 24px;
+
+        gap: 8px;
+    }
+
+    .mobile-action {
+        width: 62px;
+
+        height: 62px;
+
+        font-size: 12px;
+    }
+
+
+    /* PC CONTROLS HIDDEN ON MOBILE */
+
+    #pc-controls {
+        display: none !important;
+    }
+
+    #pc-control-hint {
+        display: none !important;
     }
 
 
@@ -1894,16 +2262,86 @@ body.dark-mode {
     }
 
 
-    /* SETTINGS / ROOM */
+    /* SETTINGS */
 
     #settings-panel,
     #room-panel {
         width: calc(100vw - 24px);
 
+        max-width: 360px;
+
         max-height: 85vh;
 
         padding: 22px 18px;
+
+        overflow-y: auto;
     }
+
+    #settings-panel h2,
+    #room-panel h2 {
+        font-size: 22px;
+    }
+
+    #settings-panel .settings-option,
+    #room-panel .room-option {
+        width: 100%;
+
+        padding: 13px;
+
+        font-size: 14px;
+    }
+
+
+    /* PC CONTROL BOX SHOULD NOT APPEAR */
+
+    #pc-controls {
+        display: none !important;
+    }
+
+
+    /* HOW TO PLAY */
+
+    .how-to-play-page {
+        padding: 20px 12px;
+    }
+
+    .how-to-play-container {
+        padding: 22px 16px;
+
+        border-radius: 16px;
+    }
+
+    .how-to-play-title {
+        font-size: 30px;
+
+        margin-bottom: 25px;
+    }
+
+    .how-to-play-section {
+        padding: 18px;
+
+        margin-bottom: 18px;
+    }
+
+    .how-to-play-section h2 {
+        font-size: 22px;
+    }
+
+    .how-to-play-section p,
+    .how-to-play-section li {
+        font-size: 15px;
+    }
+
+    .how-to-play-back {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        text-align: center;
+
+        padding: 14px 10px;
+    }
+
 }
 
 
@@ -1915,6 +2353,7 @@ body.dark-mode {
 
     body.game-body {
         width: 100vw;
+
         height: 100dvh;
 
         overflow: hidden;
@@ -1936,6 +2375,7 @@ body.dark-mode {
 
     #missions-button {
         top: 52px;
+
         left: 10px;
 
         min-height: 38px;
@@ -1947,6 +2387,7 @@ body.dark-mode {
 
     .game-action-buttons {
         top: 50px;
+
         right: 10px;
 
         flex-direction: row;
@@ -1963,27 +2404,47 @@ body.dark-mode {
 
     #joystick-zone {
         left: 18px;
+
         bottom: 15px;
 
         width: 105px;
+
         height: 105px;
     }
 
     #joystick-knob {
         width: 48px;
+
         height: 48px;
 
-        margin-left: -24px;
-        margin-top: -24px;
+        margin: 0;
+
+        transform: translate(-50%, -50%);
+    }
+
+    #direction-controls {
+        right: 18px;
+
+        bottom: 15px;
+    }
+
+    #direction-controls button {
+        width: 45px;
+
+        height: 45px;
+
+        font-size: 22px;
     }
 
     #mobile-action-buttons {
         right: 18px;
+
         bottom: 15px;
     }
 
     .mobile-action {
         width: 55px;
+
         height: 55px;
 
         font-size: 11px;
@@ -2000,38 +2461,10 @@ body.dark-mode {
 
         max-height: calc(100vh - 65px);
     }
+
 }
 
 
-/* =====================================================
-   REDUCED MOTION
-===================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-
-/* =====================================================
-   NO TEXT SELECTION DURING GAME
-===================================================== */
-
-.game-body *,
-#game-ui,
-#mobile-controls,
-#joystick-zone,
-#look-zone {
-    -webkit-user-select: none;
-    user-select: none;
-}
 /* =====================================================
    MOBILE ROTATION MESSAGE
 ===================================================== */
@@ -2084,9 +2517,6 @@ body.dark-mode {
     font-size: 16px;
 }
 
-
-/* Show rotation message only on portrait mobile */
-
 @media (max-width: 900px) and (orientation: portrait) {
 
     #orientation-message {
@@ -2094,45 +2524,39 @@ body.dark-mode {
     }
 
 }
-/* PC CONTROLS - LEFT SIDE */
-#desktop-help,
-.desktop-help,
-.pc-controls {
-    position: fixed !important;
-    left: 15px !important;
-    bottom: 25px !important;
-    top: auto !important;
-    right: auto !important;
 
-    width: 190px !important;
-    padding: 12px 16px !important;
 
-    background: rgba(15, 23, 42, 0.88) !important;
-    border-radius: 10px !important;
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
 
-    color: white !important;
-    text-align: left !important;
+@media (prefers-reduced-motion: reduce) {
 
-    font-size: 13px !important;
-    line-height: 1.45 !important;
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
 
-    z-index: 1000 !important;
-    box-sizing: border-box !important;
-}
+        animation-iteration-count: 1 !important;
 
-#desktop-help strong,
-.desktop-help strong,
-.pc-controls strong {
-    display: block !important;
-    margin-bottom: 4px !important;
-    font-size: 14px !important;
-    text-align: left !important;
-}
+        transition-duration: 0.01ms !important;
 
-@media (max-width: 900px) {
-    #desktop-help,
-    .desktop-help,
-    .pc-controls {
-        display: none !important;
+        scroll-behavior: auto !important;
     }
+
+}
+
+
+/* =====================================================
+   NO TEXT SELECTION DURING GAME
+===================================================== */
+
+.game-body *,
+#game-ui,
+#mobile-controls,
+#joystick-zone,
+#look-zone {
+    -webkit-user-select: none;
+
+    user-select: none;
 }

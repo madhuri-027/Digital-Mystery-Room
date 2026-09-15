@@ -6330,49 +6330,197 @@ function updateCamera() {
 
 
 /* =====================================================
-   MOBILE MOVEMENT
+   MOBILE TOUCH CONTROLS
 ===================================================== */
 
-function bindMovementButton(
-    id,
-    key
-) {
+const joystickZone =
+    document.getElementById("joystick-zone");
 
-    const button =
-        document.getElementById(
-            id
+const joystickKnob =
+    document.getElementById("joystick-knob");
+
+let joystickActive = false;
+let joystickStartX = 0;
+let joystickStartY = 0;
+
+const joystickMax = 55;
+
+function resetJoystick() {
+
+    joystickActive = false;
+
+    if (joystickKnob) {
+        joystickKnob.style.transform =
+            "translate(-50%, -50%)";
+    }
+
+    keys["w"] = false;
+    keys["s"] = false;
+    keys["a"] = false;
+    keys["d"] = false;
+}
+
+function updateJoystick(x, y) {
+
+    let dx = x - joystickStartX;
+    let dy = y - joystickStartY;
+
+    const distance =
+        Math.sqrt(
+            dx * dx +
+            dy * dy
         );
 
+    if (distance > joystickMax) {
+
+        const scale =
+            joystickMax / distance;
+
+        dx *= scale;
+        dy *= scale;
+    }
+
+    if (joystickKnob) {
+
+        joystickKnob.style.transform =
+            `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+    }
+
+    keys["a"] = dx < -15;
+    keys["d"] = dx > 15;
+
+    keys["w"] = dy < -15;
+    keys["s"] = dy > 15;
+}
+
+if (joystickZone) {
+
+    joystickZone.addEventListener(
+        "pointerdown",
+        function(event) {
+
+            event.preventDefault();
+
+            joystickActive = true;
+
+            const rect =
+                joystickZone.getBoundingClientRect();
+
+            joystickStartX =
+                rect.left +
+                rect.width / 2;
+
+            joystickStartY =
+                rect.top +
+                rect.height / 2;
+
+            joystickZone.setPointerCapture(
+                event.pointerId
+            );
+
+            updateJoystick(
+                event.clientX,
+                event.clientY
+            );
+        }
+    );
+
+    joystickZone.addEventListener(
+        "pointermove",
+        function(event) {
+
+            if (!joystickActive) {
+                return;
+            }
+
+            event.preventDefault();
+
+            updateJoystick(
+                event.clientX,
+                event.clientY
+            );
+        }
+    );
+
+    joystickZone.addEventListener(
+        "pointerup",
+        function(event) {
+
+            event.preventDefault();
+
+            resetJoystick();
+        }
+    );
+
+    joystickZone.addEventListener(
+        "pointercancel",
+        function() {
+
+            resetJoystick();
+        }
+    );
+
+    joystickZone.addEventListener(
+        "pointerleave",
+        function() {
+
+            if (joystickActive) {
+                resetJoystick();
+            }
+        }
+    );
+}
+
+
+/* =====================================================
+   MOBILE ARROW BUTTONS
+===================================================== */
+
+function bindMovementButton(id, key) {
+
+    const button =
+        document.getElementById(id);
 
     if (!button) {
         return;
     }
 
-
     button.addEventListener(
         "pointerdown",
-        () => {
+        function(event) {
+
+            event.preventDefault();
+
             keys[key] = true;
         }
     );
 
-
     button.addEventListener(
         "pointerup",
-        () => {
+        function(event) {
+
+            event.preventDefault();
+
             keys[key] = false;
         }
     );
 
+    button.addEventListener(
+        "pointercancel",
+        function() {
+
+            keys[key] = false;
+        }
+    );
 
     button.addEventListener(
         "pointerleave",
-        () => {
+        function() {
+
             keys[key] = false;
         }
     );
 }
-
 
 bindMovementButton(
     "move-up",
@@ -6393,6 +6541,98 @@ bindMovementButton(
     "move-right",
     "d"
 );
+
+
+/* =====================================================
+   MOBILE LOOK
+===================================================== */
+
+const lookZone =
+    document.getElementById("look-zone");
+
+let looking = false;
+let lastLookX = 0;
+let lastLookY = 0;
+
+if (lookZone) {
+
+    lookZone.addEventListener(
+        "pointerdown",
+        function(event) {
+
+            event.preventDefault();
+
+            looking = true;
+
+            lastLookX =
+                event.clientX;
+
+            lastLookY =
+                event.clientY;
+
+            lookZone.setPointerCapture(
+                event.pointerId
+            );
+        }
+    );
+
+    lookZone.addEventListener(
+        "pointermove",
+        function(event) {
+
+            if (!looking) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const deltaX =
+                event.clientX -
+                lastLookX;
+
+            const deltaY =
+                event.clientY -
+                lastLookY;
+
+            yaw -=
+                deltaX * 0.008;
+
+            pitch -=
+                deltaY * 0.008;
+
+            pitch =
+                Math.max(
+                    -1.4,
+                    Math.min(
+                        1.4,
+                        pitch
+                    )
+                );
+
+            lastLookX =
+                event.clientX;
+
+            lastLookY =
+                event.clientY;
+        }
+    );
+
+    lookZone.addEventListener(
+        "pointerup",
+        function() {
+
+            looking = false;
+        }
+    );
+
+    lookZone.addEventListener(
+        "pointercancel",
+        function() {
+
+            looking = false;
+        }
+    );
+}
 
 
 /* =====================================================

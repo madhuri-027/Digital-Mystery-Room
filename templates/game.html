@@ -1,557 +1,349 @@
-<!DOCTYPE html>
-<html lang="en">
+<meta charset="UTF-8">
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    >
-
-    <meta
-        name="theme-color"
-        content="#020617"
-    >
-
-    <title>Digital Mystery Room</title>
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
-</head>
-
-
-<body
-    class="game-body {{ mode }}-mode"
-    data-room="{{ room_name }}"
-    data-mode="{{ mode }}"
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
 >
 
-
-    <!-- =====================================================
-         GAME UI
-    ====================================================== -->
-
-    <div id="game-ui">
-
-
-        <!-- =================================================
-             TOP BAR
-        ================================================== -->
-
-        <div class="top-bar">
-
-            <div class="player-info">
-
-                <span>🕵️</span>
-
-                <span>
-                    {{ player_name }}
-                </span>
-
-                <span class="room-name">
-                    • {{ room_name }}
-                </span>
-
-            </div>
-
-
-            <div id="timer">
-                15:00
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             MISSIONS BUTTON
-        ================================================== -->
-
-        <button
-            id="missions-button"
-            type="button"
-        >
-            🎯 MISSIONS
-        </button>
-
-
-
-        <!-- =================================================
-             TOP ACTION BUTTONS
-        ================================================== -->
-
-        <div class="game-action-buttons">
-
-            <button
-                id="settings-button"
-                type="button"
-            >
-                ⚙️ SETTINGS
-            </button>
-
-
-            <button
-                id="light-button"
-                type="button"
-            >
-                🌞 LIGHT
-            </button>
-
-
-            <button
-                id="dark-button"
-                type="button"
-            >
-                🌙 DARK
-            </button>
-
-        </div>
-
-
-
-        <!-- =================================================
-             MISSIONS PANEL
-        ================================================== -->
-
-        <div id="missions-panel">
-
-
-            <button
-                id="missions-close"
-                type="button"
-                aria-label="Close missions"
-            >
-                ×
-            </button>
-
-
-            <h2>
-                🎯 MISSIONS
-            </h2>
-
-
-            <div id="mission-list">
-
-
-                <!-- MISSION 1 -->
-
-                <div
-                    class="mission-step active"
-                    id="mission-1"
-                >
-
-                    <span class="mission-check">
-                        ☐
-                    </span>
-
-                    <span class="mission-title">
-                        Find the painting
-                    </span>
-
-                </div>
-
-
-
-                <!-- MISSION 2 -->
-
-                <div
-                    class="mission-step"
-                    id="mission-2"
-                >
-
-                    <span class="mission-check">
-                        ☐
-                    </span>
-
-                    <span class="mission-title">
-                        Solve the bookshelf
-                    </span>
-
-                </div>
-
-
-
-                <!-- MISSION 3 -->
-
-                <div
-                    class="mission-step"
-                    id="mission-3"
-                >
-
-                    <span class="mission-check">
-                        ☐
-                    </span>
-
-                    <span class="mission-title">
-                        Unlock the drawer
-                    </span>
-
-                </div>
-
-
-
-                <!-- MISSION 4 -->
-
-                <div
-                    class="mission-step"
-                    id="mission-4"
-                >
-
-                    <span class="mission-check">
-                        ☐
-                    </span>
-
-                    <span class="mission-title">
-                        Hack the computer
-                    </span>
-
-                </div>
-
-
-
-                <!-- MISSION 5 -->
-
-                <div
-                    class="mission-step"
-                    id="mission-5"
-                >
-
-                    <span class="mission-check">
-                        ☐
-                    </span>
-
-                    <span class="mission-title">
-                        Find the key
-                    </span>
-
-                </div>
-
-
-
-                <!-- MISSION 6 -->
-
-                <div
-                    class="mission-step"
-                    id="mission-6"
-                >
-
-                    <span class="mission-check">
-                        ☐
-                    </span>
-
-                    <span class="mission-title">
-                        Escape the room
-                    </span>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 MISSION TOOLS
-            ================================================== -->
-
-            <div id="mission-tools">
-
-
-                <div id="current-mission">
-
-                    Current Mission:
-
-                    <strong>
-                        Find the painting
-                    </strong>
-
-                </div>
-
-
-                <div class="mission-buttons">
-
-
-                    <button
-                        id="mission-hint-button"
-                        type="button"
-                    >
-                        💡 HINT
-                    </button>
-
-
-                    <button
-                        id="mission-clue-button"
-                        type="button"
-                    >
-                        🔎 CLUE
-                    </button>
-
-
-                </div>
-
-
-                <div id="mission-help-text">
-
-                    Explore the room and look carefully at the walls.
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- =================================================
-             MISSION MESSAGE
-        ================================================== -->
-
-        <div class="mission-box">
-
-            Explore the room and solve every mystery.
-
-        </div>
-
-
-
-        <!-- =================================================
-             INTERACTION MESSAGE
-        ================================================== -->
-
-        <div id="interaction-message">
-
-            Press E to investigate
-
-        </div>
-
-
-
-        <!-- =================================================
-             CROSSHAIR
-        ================================================== -->
-
-        <div class="crosshair">
-            +
-        </div>
-
-
-
-        <!-- =================================================
-             BOTTOM BAR
-        ================================================== -->
-
-        <div class="bottom-bar">
-
+<meta
+    name="theme-color"
+    content="#020617"
+>
+
+<title>Digital Mystery Room</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+>
+
+<style>
+    #pc-control-hint {
+        position: fixed !important;
+        left: 50% !important;
+        bottom: 25px !important;
+        transform: translateX(-50%) !important;
+        color: #38bdf8 !important;
+        background: rgba(0,0,0,0.65) !important;
+        padding: 10px 20px !important;
+        border-radius: 10px !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        z-index: 9999 !important;
+        white-space: nowrap !important;
+        text-shadow: 0 0 8px rgba(56,189,248,0.7) !important;
+    }
+
+    #pc-controls {
+        width: 100% !important;
+        margin-top: 18px !important;
+        padding: 15px !important;
+        background: rgba(15,23,42,0.9) !important;
+        border-radius: 12px !important;
+        box-sizing: border-box !important;
+        color: white !important;
+        text-align: left !important;
+    }
+
+    #pc-controls .pc-controls-title {
+        text-align: center !important;
+        font-size: 15px !important;
+        font-weight: 800 !important;
+        margin-bottom: 12px !important;
+    }
+
+    #pc-controls .pc-control-line {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin: 8px 0 !important;
+        font-size: 13px !important;
+    }
+
+    #pc-controls .pc-control-line strong {
+        color: #38bdf8 !important;
+    }
+
+    #mobile-controls {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+
+        #pc-control-hint {
+            display: none !important;
+        }
+
+        #mobile-controls {
+            display: block !important;
+            position: fixed !important;
+            inset: 0 !important;
+            pointer-events: none !important;
+            z-index: 5000 !important;
+        }
+
+        #joystick-zone {
+            position: absolute !important;
+            left: 25px !important;
+            bottom: 30px !important;
+            width: 130px !important;
+            height: 130px !important;
+            border-radius: 50% !important;
+            background: rgba(255,255,255,0.12) !important;
+            border: 2px solid rgba(255,255,255,0.35) !important;
+            pointer-events: auto !important;
+            touch-action: none !important;
+        }
+
+        #joystick-knob {
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            width: 55px !important;
+            height: 55px !important;
+            border-radius: 50% !important;
+            transform: translate(-50%,-50%) !important;
+            background: rgba(255,255,255,0.45) !important;
+            border: 2px solid rgba(255,255,255,0.7) !important;
+            pointer-events: none !important;
+        }
+
+        #look-zone {
+            position: absolute !important;
+            left: 180px !important;
+            right: 180px !important;
+            top: 70px !important;
+            bottom: 70px !important;
+            pointer-events: auto !important;
+            touch-action: none !important;
+        }
+
+        #direction-controls {
+            position: absolute !important;
+            right: 25px !important;
+            bottom: 30px !important;
+            width: 130px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 5px !important;
+            pointer-events: auto !important;
+        }
+
+        #direction-controls button {
+            width: 42px !important;
+            height: 42px !important;
+            border: 1px solid rgba(255,255,255,0.35) !important;
+            border-radius: 10px !important;
+            background: rgba(255,255,255,0.22) !important;
+            color: white !important;
+            font-size: 22px !important;
+            font-weight: bold !important;
+            touch-action: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+
+        #direction-controls button:active {
+            background: rgba(56,189,248,0.65) !important;
+            transform: scale(0.94) !important;
+        }
+
+        .direction-middle {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 5px !important;
+        }
+    }
+
+    @media (max-width: 500px) {
+
+        #joystick-zone {
+            left: 15px !important;
+            bottom: 20px !important;
+            width: 110px !important;
+            height: 110px !important;
+        }
+
+        #joystick-knob {
+            width: 48px !important;
+            height: 48px !important;
+        }
+
+        #direction-controls {
+            right: 15px !important;
+            bottom: 20px !important;
+        }
+    }
+</style>
+<div id="game-ui">
+
+    <div class="top-bar">
+
+        <div class="player-info">
+
+            <span>🕵️</span>
 
             <span>
-
-                🔍 Clues:
-
-                <strong id="clues-found">
-                    0
-                </strong>
-
+                {{ player_name }}
             </span>
 
-
-            <span>
-
-                🧩 Puzzles:
-
-                <strong id="puzzles-solved">
-                    0
-                </strong>
-
+            <span class="room-name">
+                • {{ room_name }}
             </span>
-
-
-            <span>
-
-                💡 Hints:
-
-                <strong id="hints-left">
-                    3
-                </strong>
-
-            </span>
-
 
         </div>
 
-
-
-        <!-- =================================================
-             MOBILE CONTROLS
-        ================================================== -->
-
-        <div
-            id="mobile-controls"
-            aria-label="Mobile game controls"
-        >
-
-
-            <div
-                id="joystick-zone"
-                aria-label="Movement joystick"
-            >
-
-                <div id="joystick-knob"></div>
-
-            </div>
-
-
-            <div
-                id="look-zone"
-                aria-label="Look around area"
-            ></div>
-
-
+        <div id="timer">
+            15:00
         </div>
-
 
     </div>
 
 
-
-    <!-- =====================================================
-         SETTINGS PANEL
-    ====================================================== -->
-
-    <div
-        id="settings-panel"
-        role="dialog"
-        aria-modal="true"
+    <button
+        id="missions-button"
+        type="button"
     >
+        🎯 MISSIONS
+    </button>
 
+
+    <div class="game-action-buttons">
 
         <button
-            class="close-panel"
-            id="close-settings"
+            id="settings-button"
             type="button"
+        >
+            ⚙️ SETTINGS
+        </button>
+
+        <button
+            id="light-button"
+            type="button"
+        >
+            🌞 LIGHT
+        </button>
+
+        <button
+            id="dark-button"
+            type="button"
+        >
+            🌙 DARK
+        </button>
+
+    </div>
+
+
+    <div id="missions-panel">
+
+        <button
+            id="missions-close"
+            type="button"
+            aria-label="Close missions"
         >
             ×
         </button>
 
-
         <h2>
-            ⚙️ SETTINGS
+            🎯 MISSIONS
         </h2>
 
+        <div id="mission-list">
 
+            <div
+                class="mission-step active"
+                id="mission-1"
+            >
 
-        <!-- LIGHT -->
+                <span class="mission-check">
+                    ☐
+                </span>
 
-        <button
-            class="settings-option"
-            id="settings-light"
-            type="button"
-        >
-            ☀️ Light Room
-        </button>
-
-
-
-        <!-- DARK -->
-
-        <button
-            class="settings-option"
-            id="settings-dark"
-            type="button"
-        >
-            🌙 Dark Room
-        </button>
-
-
-
-        <!-- SOUND -->
-
-        <button
-            class="settings-option"
-            id="settings-sound"
-            type="button"
-        >
-            🔊 Sound On
-        </button>
-
-
-
-        <!-- FULLSCREEN -->
-
-        <button
-            class="settings-option"
-            id="settings-fullscreen"
-            type="button"
-        >
-            ⛶ Fullscreen
-        </button>
-
-
-
-        <!-- =================================================
-             PC CONTROLS
-        ================================================== -->
-
-        <div id="pc-controls">
-
-            <div class="pc-controls-title">
-                🎮 PC CONTROLS
-            </div>
-
-
-            <div class="pc-control-line">
-
-                <strong>
-                    W A S D
-                </strong>
-
-                <span>
-                    — Move
+                <span class="mission-title">
+                    Find the painting
                 </span>
 
             </div>
 
 
-            <div class="pc-control-line">
+            <div
+                class="mission-step"
+                id="mission-2"
+            >
 
-                <strong>
-                    Mouse
-                </strong>
+                <span class="mission-check">
+                    ☐
+                </span>
 
-                <span>
-                    — Look around
+                <span class="mission-title">
+                    Solve the bookshelf
                 </span>
 
             </div>
 
 
-            <div class="pc-control-line">
+            <div
+                class="mission-step"
+                id="mission-3"
+            >
 
-                <strong>
-                    E
-                </strong>
+                <span class="mission-check">
+                    ☐
+                </span>
 
-                <span>
-                    — Explore
+                <span class="mission-title">
+                    Unlock the drawer
                 </span>
 
             </div>
 
 
-            <div class="pc-control-line">
+            <div
+                class="mission-step"
+                id="mission-4"
+            >
 
-                <strong>
-                    ESC
-                </strong>
+                <span class="mission-check">
+                    ☐
+                </span>
 
-                <span>
-                    — Close
+                <span class="mission-title">
+                    Hack the computer
+                </span>
+
+            </div>
+
+
+            <div
+                class="mission-step"
+                id="mission-5"
+            >
+
+                <span class="mission-check">
+                    ☐
+                </span>
+
+                <span class="mission-title">
+                    Find the key
+                </span>
+
+            </div>
+
+
+            <div
+                class="mission-step"
+                id="mission-6"
+            >
+
+                <span class="mission-check">
+                    ☐
+                </span>
+
+                <span class="mission-title">
+                    Escape the room
                 </span>
 
             </div>
@@ -559,523 +351,753 @@
         </div>
 
 
+        <div id="mission-tools">
+
+            <div id="current-mission">
+
+                Current Mission:
+
+                <strong>
+                    Find the painting
+                </strong>
+
+            </div>
+
+            <div class="mission-buttons">
+
+                <button
+                    id="mission-hint-button"
+                    type="button"
+                >
+                    💡 HINT
+                </button>
+
+                <button
+                    id="mission-clue-button"
+                    type="button"
+                >
+                    🔎 CLUE
+                </button>
+
+            </div>
+
+            <div id="mission-help-text">
+                Explore the room and look carefully at the walls.
+            </div>
+
+        </div>
+
     </div>
 
 
-
-    <!-- =====================================================
-         PUZZLE MODAL
-    ====================================================== -->
-
-    <div
-        id="modal"
-        role="dialog"
-        aria-modal="true"
-    >
+    <div class="mission-box">
+        Explore the room and solve every mystery.
+    </div>
 
 
-        <div id="modal-content">
+    <div id="interaction-message">
+        Press E to investigate
+    </div>
 
 
-            <button
-                id="close-modal"
-                type="button"
-                aria-label="Close"
-            >
-                ×
+    <div class="crosshair">
+        +
+    </div>
+
+
+    <div class="bottom-bar">
+
+        <span>
+            🔍 Clues:
+            <strong id="clues-found">
+                0
+            </strong>
+        </span>
+
+        <span>
+            🧩 Puzzles:
+            <strong id="puzzles-solved">
+                0
+            </strong>
+        </span>
+
+        <span>
+            💡 Hints:
+            <strong id="hints-left">
+                3
+            </strong>
+        </span>
+
+    </div>
+
+
+    <div id="pc-control-hint">
+        🎮 To know PC controls, check Settings ⚙️
+    </div>
+
+
+    <div id="mobile-controls">
+
+        <div id="joystick-zone">
+            <div id="joystick-knob"></div>
+        </div>
+
+        <div id="look-zone"></div>
+
+        <div id="direction-controls">
+
+            <button id="move-up">
+                ↑
             </button>
 
+            <div class="direction-middle">
 
-            <div id="modal-body"></div>
+                <button id="move-left">
+                    ←
+                </button>
 
+                <button id="move-down">
+                    ↓
+                </button>
 
-        </div>
+                <button id="move-right">
+                    →
+                </button>
 
-
-    </div>
-
-
-
-    <!-- =====================================================
-         RESULT FORM
-    ====================================================== -->
-
-    <form
-        id="result-form"
-        action="{{ url_for('result') }}"
-        method="POST"
-        style="display:none;"
-    >
-
-        <input
-            type="hidden"
-            id="score-input"
-            name="score"
-            value="0"
-        >
-
-
-        <input
-            type="hidden"
-            id="time-input"
-            name="time_remaining"
-            value="0"
-        >
-
-
-        <input
-            type="hidden"
-            id="hints-input"
-            name="hints_used"
-            value="0"
-        >
-
-    </form>
-
-
-
-    <!-- =====================================================
-         ROTATION MESSAGE
-    ====================================================== -->
-
-    <div id="orientation-message">
-
-
-        <div>
-
-            <div class="orientation-icon">
-                📱
             </div>
 
+        </div>
 
-            <h2>
-                Rotate Your Device
-            </h2>
+    </div>
+
+</div>
 
 
-            <p>
-                For the best game experience,
-                rotate your phone to landscape mode.
-            </p>
+<div
+    id="settings-panel"
+    role="dialog"
+    aria-modal="true"
+>
 
+    <button
+        class="close-panel"
+        id="close-settings"
+        type="button"
+    >
+        ×
+    </button>
+
+    <h2>
+        ⚙️ SETTINGS
+    </h2>
+
+
+    <button
+        class="settings-option"
+        id="settings-light"
+        type="button"
+    >
+        ☀️ Light Room
+    </button>
+
+
+    <button
+        class="settings-option"
+        id="settings-dark"
+        type="button"
+    >
+        🌙 Dark Room
+    </button>
+
+
+    <button
+        class="settings-option"
+        id="settings-sound"
+        type="button"
+    >
+        🔊 Sound On
+    </button>
+
+
+    <button
+        class="settings-option"
+        id="settings-fullscreen"
+        type="button"
+    >
+        ⛶ Fullscreen
+    </button>
+
+
+    <div id="pc-controls">
+
+        <div class="pc-controls-title">
+            🎮 PC CONTROLS
+        </div>
+
+        <div class="pc-control-line">
+
+            <strong>
+                W A S D
+            </strong>
+
+            <span>
+                — Move
+            </span>
 
         </div>
 
 
+        <div class="pc-control-line">
+
+            <strong>
+                Mouse
+            </strong>
+
+            <span>
+                — Look around
+            </span>
+
+        </div>
+
+
+        <div class="pc-control-line">
+
+            <strong>
+                E
+            </strong>
+
+            <span>
+                — Explore
+            </span>
+
+        </div>
+
+
+        <div class="pc-control-line">
+
+            <strong>
+                ESC
+            </strong>
+
+            <span>
+                — Close
+            </span>
+
+        </div>
+
     </div>
 
+</div>
 
 
-    <!-- =====================================================
-         THREE.JS IMPORT MAP
-    ====================================================== -->
+<div
+    id="modal"
+    role="dialog"
+    aria-modal="true"
+>
 
-    <script type="importmap">
+    <div id="modal-content">
 
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-        }
+        <button
+            id="close-modal"
+            type="button"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+        <div id="modal-body"></div>
+
+    </div>
+
+</div>
+
+
+<form
+    id="result-form"
+    action="{{ url_for('result') }}"
+    method="POST"
+    style="display:none;"
+>
+
+    <input
+        type="hidden"
+        id="score-input"
+        name="score"
+        value="0"
+    >
+
+    <input
+        type="hidden"
+        id="time-input"
+        name="time_remaining"
+        value="0"
+    >
+
+    <input
+        type="hidden"
+        id="hints-input"
+        name="hints_used"
+        value="0"
+    >
+
+</form>
+
+
+<div id="orientation-message">
+
+    <div>
+
+        <div class="orientation-icon">
+            📱
+        </div>
+
+        <h2>
+            Rotate Your Device
+        </h2>
+
+        <p>
+            For the best game experience,
+            rotate your phone to landscape mode.
+        </p>
+
+    </div>
+
+</div>
+
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
     }
-
-    </script>
-
-
-
-    <!-- =====================================================
-         TIMER
-    ====================================================== -->
-
-    <script
-        src="{{ url_for('static', filename='js/timer.js') }}"
-    ></script>
+}
+</script>
 
 
-
-    <!-- =====================================================
-         THREE.JS GAME
-    ====================================================== -->
-
-    <script
-        type="module"
-        src="{{ url_for('static', filename='js/three-game.js') }}"
-    ></script>
+<script
+    src="{{ url_for('static', filename='js/timer.js') }}"
+></script>
 
 
-
-    <!-- =====================================================
-         UI CONTROLS
-    ====================================================== -->
-
-    <script>
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
+<audio
+    id="bgm"
+    src="{{ url_for('static', filename='audio/bgm.mp3') }}"
+    loop
+    preload="auto">
+</audio>
 
 
-            /* =================================================
-               ELEMENTS
-            ================================================= */
-
-            const missionsButton =
-                document.getElementById(
-                    "missions-button"
-                );
-
-            const missionsPanel =
-                document.getElementById(
-                    "missions-panel"
-                );
-
-            const missionsClose =
-                document.getElementById(
-                    "missions-close"
-                );
+<script
+    type="module"
+    src="{{ url_for('static', filename='js/three-game.js') }}"
+></script>
 
 
-            const settingsButton =
-                document.getElementById(
-                    "settings-button"
-                );
+<script>
 
-            const settingsPanel =
-                document.getElementById(
-                    "settings-panel"
-                );
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-            const closeSettings =
-                document.getElementById(
-                    "close-settings"
-                );
+        const missionsButton =
+            document.getElementById(
+                "missions-button"
+            );
 
+        const missionsPanel =
+            document.getElementById(
+                "missions-panel"
+            );
 
-            const lightButton =
-                document.getElementById(
-                    "light-button"
-                );
-
-            const darkButton =
-                document.getElementById(
-                    "dark-button"
-                );
+        const missionsClose =
+            document.getElementById(
+                "missions-close"
+            );
 
 
-            const settingsLight =
-                document.getElementById(
-                    "settings-light"
-                );
+        const settingsButton =
+            document.getElementById(
+                "settings-button"
+            );
 
-            const settingsDark =
-                document.getElementById(
-                    "settings-dark"
-                );
+        const settingsPanel =
+            document.getElementById(
+                "settings-panel"
+            );
+
+        const closeSettings =
+            document.getElementById(
+                "close-settings"
+            );
 
 
+        const lightButton =
+            document.getElementById(
+                "light-button"
+            );
 
-            /* =================================================
-               MISSIONS OPEN
-            ================================================= */
+        const darkButton =
+            document.getElementById(
+                "dark-button"
+            );
+
+
+        const settingsLight =
+            document.getElementById(
+                "settings-light"
+            );
+
+        const settingsDark =
+            document.getElementById(
+                "settings-dark"
+            );
+
+
+        if (
+            missionsButton &&
+            missionsPanel
+        ) {
+
+            missionsButton.onclick =
+                function () {
+
+                    missionsPanel.style.display =
+                        "block";
+
+                };
+
+        }
+
+
+        if (
+            missionsClose &&
+            missionsPanel
+        ) {
+
+            missionsClose.onclick =
+                function () {
+
+                    missionsPanel.style.display =
+                        "none";
+
+                };
+
+        }
+
+
+        if (
+            settingsButton &&
+            settingsPanel
+        ) {
+
+            settingsButton.onclick =
+                function () {
+
+                    settingsPanel.style.display =
+                        "block";
+
+                };
+
+        }
+
+
+        if (
+            closeSettings &&
+            settingsPanel
+        ) {
+
+            closeSettings.onclick =
+                function () {
+
+                    settingsPanel.style.display =
+                        "none";
+
+                };
+
+        }
+
+
+        function activateLight() {
+
+            document.body.classList.remove(
+                "dark-mode"
+            );
+
+            document.body.classList.add(
+                "light-mode"
+            );
+
+            document.body.dataset.mode =
+                "light";
+
+            window.dispatchEvent(
+                new Event(
+                    "room-light"
+                )
+            );
+
+        }
+
+
+        if (lightButton) {
+
+            lightButton.onclick =
+                function () {
+
+                    activateLight();
+
+                };
+
+        }
+
+
+        if (settingsLight) {
+
+            settingsLight.onclick =
+                function () {
+
+                    activateLight();
+
+                };
+
+        }
+
+
+        function activateDark() {
+
+            document.body.classList.remove(
+                "light-mode"
+            );
+
+            document.body.classList.add(
+                "dark-mode"
+            );
+
+            document.body.dataset.mode =
+                "dark";
+
+            window.dispatchEvent(
+                new Event(
+                    "room-dark"
+                )
+            );
+
+        }
+
+
+        if (darkButton) {
+
+            darkButton.onclick =
+                function () {
+
+                    activateDark();
+
+                };
+
+        }
+
+
+        if (settingsDark) {
+
+            settingsDark.onclick =
+                function () {
+
+                    activateDark();
+
+                };
+
+        }
+
+
+        const soundButton =
+            document.getElementById(
+                "settings-sound"
+            );
+
+        const bgm =
+            document.getElementById(
+                "bgm"
+            );
+
+        let soundEnabled = true;
+
+
+        function startBGM() {
 
             if (
-                missionsButton &&
-                missionsPanel
+                !bgm ||
+                !soundEnabled
             ) {
+                return;
+            }
 
-                missionsButton.onclick =
-                    function () {
+            bgm.volume = 0.25;
 
-                        missionsPanel.style.display =
-                            "block";
+            bgm.play().catch(
+                function () {
+                    console.log(
+                        "Music will start after user interaction."
+                    );
+                }
+            );
 
-                    };
+        }
+
+
+        function stopBGM() {
+
+            if (!bgm) {
+                return;
+            }
+
+            bgm.pause();
+
+        }
+
+
+        function updateSoundButton() {
+
+            if (!soundButton) {
+                return;
+            }
+
+            if (soundEnabled) {
+
+                soundButton.textContent =
+                    "🔊 Sound On";
+
+            } else {
+
+                soundButton.textContent =
+                    "🔇 Sound Off";
 
             }
 
+        }
 
 
-            /* =================================================
-               MISSIONS CLOSE
-            ================================================= */
+        if (bgm) {
 
-            if (
-                missionsClose &&
-                missionsPanel
-            ) {
+            bgm.addEventListener(
+                "error",
+                function () {
 
-                missionsClose.onclick =
-                    function () {
-
-                        missionsPanel.style.display =
-                            "none";
-
-                    };
-
-            }
-
-
-
-            /* =================================================
-               SETTINGS OPEN
-            ================================================= */
-
-            if (
-                settingsButton &&
-                settingsPanel
-            ) {
-
-                settingsButton.onclick =
-                    function () {
-
-                        settingsPanel.style.display =
-                            "block";
-
-                    };
-
-            }
-
-
-
-            /* =================================================
-               SETTINGS CLOSE
-            ================================================= */
-
-            if (
-                closeSettings &&
-                settingsPanel
-            ) {
-
-                closeSettings.onclick =
-                    function () {
-
-                        settingsPanel.style.display =
-                            "none";
-
-                    };
-
-            }
-
-
-
-            /* =================================================
-               LIGHT ROOM
-            ================================================= */
-
-            function activateLight() {
-
-                document.body.classList.remove(
-                    "dark-mode"
-                );
-
-                document.body.classList.add(
-                    "light-mode"
-                );
-
-                document.body.dataset.mode =
-                    "light";
-
-
-                window.dispatchEvent(
-                    new Event(
-                        "room-light"
-                    )
-                );
-
-            }
-
-
-            if (lightButton) {
-
-                lightButton.onclick =
-                    function () {
-
-                        activateLight();
-
-                    };
-
-            }
-
-
-            if (settingsLight) {
-
-                settingsLight.onclick =
-                    function () {
-
-                        activateLight();
-
-                    };
-
-            }
-
-
-
-            /* =================================================
-               DARK ROOM
-            ================================================= */
-
-            function activateDark() {
-
-                document.body.classList.remove(
-                    "light-mode"
-                );
-
-                document.body.classList.add(
-                    "dark-mode"
-                );
-
-                document.body.dataset.mode =
-                    "dark";
-
-
-                window.dispatchEvent(
-                    new Event(
-                        "room-dark"
-                    )
-                );
-
-            }
-
-
-            if (darkButton) {
-
-                darkButton.onclick =
-                    function () {
-
-                        activateDark();
-
-                    };
-
-            }
-
-
-            if (settingsDark) {
-
-                settingsDark.onclick =
-                    function () {
-
-                        activateDark();
-
-                    };
-
-            }
-
-
-
-            /* =================================================
-               SOUND
-            ================================================= */
-
-            const soundButton =
-                document.getElementById(
-                    "settings-sound"
-                );
-
-
-            if (soundButton) {
-
-                soundButton.dataset.enabled =
-                    "true";
-
-
-                soundButton.onclick =
-                    function () {
-
-                        const enabled =
-                            soundButton.dataset.enabled !==
-                            "true";
-
-
-                        soundButton.dataset.enabled =
-                            enabled
-                                ? "true"
-                                : "false";
-
-
-                        soundButton.textContent =
-                            enabled
-                                ? "🔊 Sound On"
-                                : "🔇 Sound Off";
-
-                    };
-
-            }
-
-
-
-            /* =================================================
-               FULLSCREEN
-            ================================================= */
-
-            const fullscreenButton =
-                document.getElementById(
-                    "settings-fullscreen"
-                );
-
-
-            if (fullscreenButton) {
-
-                fullscreenButton.onclick =
-                    function () {
-
-                        if (
-                            !document.fullscreenElement
-                        ) {
-
-                            document.documentElement
-                                .requestFullscreen();
-
-                        } else {
-
-                            document.exitFullscreen();
-
-                        }
-
-                    };
-
-            }
-
-
-
-            /* =================================================
-               ESC
-            ================================================= */
-
-            document.addEventListener(
-                "keydown",
-                function (event) {
-
-                    if (
-                        event.key === "Escape"
-                    ) {
-
-
-                        if (settingsPanel) {
-
-                            settingsPanel.style.display =
-                                "none";
-
-                        }
-
-
-                        if (missionsPanel) {
-
-                            missionsPanel.style.display =
-                                "none";
-
-                        }
-
-                    }
+                    console.warn(
+                        "Background music not found. Add static/audio/bgm.mp3"
+                    );
 
                 }
             );
 
+        }
+
+
+        if (soundButton) {
+
+            soundButton.dataset.enabled =
+                "true";
+
+            soundButton.onclick =
+                function () {
+
+                    soundEnabled =
+                        !soundEnabled;
+
+                    if (soundEnabled) {
+
+                        startBGM();
+
+                    } else {
+
+                        stopBGM();
+
+                    }
+
+                    updateSoundButton();
+
+                };
+
+            updateSoundButton();
 
         }
-    );
-
-    </script>
 
 
-</body>
+        document.addEventListener(
+            "pointerdown",
+            function startMusicOnce() {
 
-</html>
+                startBGM();
+
+                document.removeEventListener(
+                    "pointerdown",
+                    startMusicOnce
+                );
+
+            },
+            {
+                once: true
+            }
+        );
+
+
+        const fullscreenButton =
+            document.getElementById(
+                "settings-fullscreen"
+            );
+
+
+        if (fullscreenButton) {
+
+            fullscreenButton.onclick =
+                function () {
+
+                    if (
+                        !document.fullscreenElement
+                    ) {
+
+                        document.documentElement
+                            .requestFullscreen();
+
+                    } else {
+
+                        document.exitFullscreen();
+
+                    }
+
+                };
+
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    if (settingsPanel) {
+
+                        settingsPanel.style.display =
+                            "none";
+
+                    }
+
+                    if (missionsPanel) {
+
+                        missionsPanel.style.display =
+                            "none";
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
