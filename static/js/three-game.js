@@ -376,33 +376,33 @@ function createRandomPuzzleSet() {
 
 
     /* -------------------------------------------------
-       KEY PATTERN
-       Random arithmetic progression.
-    ------------------------------------------------- */
+   KEY PATTERN
+   Random arithmetic progression below 9.
+------------------------------------------------- */
 
-    const keyStart =
-        randomNumber(1, 4);
+const keyStart =
+    randomNumber(1, 3);
 
-    const keyStep =
-        randomNumber(1, 3);
+const keyStep =
+    randomNumber(1, 2);
 
-    const keySequence = [
-        keyStart,
-        keyStart + keyStep,
-        keyStart + keyStep * 2,
-        keyStart + keyStep * 3
-    ];
+const keySequence = [
+    keyStart,
+    keyStart + keyStep,
+    keyStart + keyStep * 2,
+    keyStart + keyStep * 3
+];
 
-    const keyNext =
-        keyStart + keyStep * 4;
+const keyNext =
+    keyStart + keyStep * 4;
 
-    const keyRomanSequence =
-        keySequence.map(
-            numberToRoman
-        );
+const keyRomanSequence =
+    keySequence.map(
+        numberToRoman
+    );
 
-    const keyNextRoman =
-        numberToRoman(keyNext);
+const keyNextRoman =
+    numberToRoman(keyNext);
 
 
     /* -------------------------------------------------
