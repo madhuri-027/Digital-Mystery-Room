@@ -5960,80 +5960,189 @@ function showExit() {
 /* =====================================================
    INTERACTION
 ===================================================== */
-function updateInteractionPrompt(){
-    const prompt=document.getElementById("interaction-prompt");
-    if(!prompt)return;
 
-    const object=getNearestInteractable();
+function updateInteractionPrompt() {
 
-    if(!object){
-        prompt.style.display="none";
+    const prompt =
+        document.getElementById("interaction-prompt");
+
+    if (!prompt) return;
+
+    const object =
+        getNearestInteractable();
+
+    if (!object) {
+
+        prompt.style.display = "none";
+
         return;
     }
 
-    if(window.innerWidth<=768){
-        prompt.textContent="Tap to Explore";
-    }else{
-        prompt.textContent="Press E to Explore";
+    if (
+        window.innerWidth <= 768 ||
+        window.matchMedia("(pointer: coarse)").matches
+    ) {
+
+        prompt.textContent =
+            "Tap to Explore";
+
+    } else {
+
+        prompt.textContent =
+            "Press E to Explore";
     }
 
-    prompt.style.display="block";
+    prompt.style.display = "block";
 }
 
-function interact(
-    objectName
-) {
 
-    if (
-        objectName ===
-        "painting"
-    ) {
+function interact(objectName) {
+
+    if (objectName === "painting") {
 
         showPainting();
 
-    } else if (
-        objectName ===
-        "bookshelf"
-    ) {
+    } else if (objectName === "bookshelf") {
 
         showBookshelf();
 
-    } else if (
-        objectName ===
-        "drawer"
-    ) {
+    } else if (objectName === "drawer") {
 
         showDrawer();
 
-    } else if (
-        objectName ===
-        "computer"
-    ) {
+    } else if (objectName === "computer") {
 
         showComputer();
 
-    } else if (
-        objectName ===
-        "key"
-    ) {
+    } else if (objectName === "key") {
 
         showKey();
 
-    } else if (
-        objectName ===
-        "clock"
-    ) {
+    } else if (objectName === "clock") {
 
         showClock();
 
-    } else if (
-        objectName ===
-        "exitDoor"
-    ) {
+    } else if (objectName === "exitDoor") {
 
         showExit();
     }
 }
+
+
+/* =====================================================
+   PC E KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key.toLowerCase() === "e" &&
+            !event.repeat
+        ) {
+
+            const object =
+                getNearestInteractable();
+
+            if (object) {
+
+                interact(object.name);
+            }
+        }
+    }
+);
+
+
+/* =====================================================
+   MOBILE TAP TO EXPLORE
+===================================================== */
+
+let mobileTapStartX = 0;
+let mobileTapStartY = 0;
+
+let mobileTapMoved = false;
+
+
+renderer.domElement.addEventListener(
+    "pointerdown",
+    function(event) {
+
+        if (
+            !window.matchMedia(
+                "(pointer: coarse)"
+            ).matches
+        ) {
+            return;
+        }
+
+        mobileTapStartX =
+            event.clientX;
+
+        mobileTapStartY =
+            event.clientY;
+
+        mobileTapMoved = false;
+    }
+);
+
+
+renderer.domElement.addEventListener(
+    "pointermove",
+    function(event) {
+
+        if (
+            !window.matchMedia(
+                "(pointer: coarse)"
+            ).matches
+        ) {
+            return;
+        }
+
+        const dx =
+            event.clientX -
+            mobileTapStartX;
+
+        const dy =
+            event.clientY -
+            mobileTapStartY;
+
+        if (
+            Math.abs(dx) > 10 ||
+            Math.abs(dy) > 10
+        ) {
+
+            mobileTapMoved = true;
+        }
+    }
+);
+
+
+renderer.domElement.addEventListener(
+    "pointerup",
+    function(event) {
+
+        if (
+            !window.matchMedia(
+                "(pointer: coarse)"
+            ).matches
+        ) {
+            return;
+        }
+
+        if (mobileTapMoved) {
+            return;
+        }
+
+        const object =
+            getNearestInteractable();
+
+        if (object) {
+
+            interact(object.name);
+        }
+    }
+);
 
 
 /* =====================================================
