@@ -5615,7 +5615,7 @@ function showClock() {
                 id="puzzle-answer"
                 class="puzzle-input"
                 placeholder="Enter clock code"
-                maxlength="4"
+                maxlength="10"
             >
 
             <button
@@ -5796,7 +5796,7 @@ function showExit() {
             id="puzzle-answer"
             class="puzzle-input"
             placeholder="Enter final code"
-            maxlength="4"
+            maxlength="20"
         >
 
         <button
@@ -6037,6 +6037,19 @@ document.addEventListener(
     "keydown",
     function(event) {
 
+        const activeElement =
+            document.activeElement;
+
+        if (
+            activeElement &&
+            (
+                activeElement.tagName === "INPUT" ||
+                activeElement.tagName === "TEXTAREA"
+            )
+        ) {
+            return;
+        }
+
         if (
             event.key.toLowerCase() === "e" &&
             !event.repeat
@@ -6052,7 +6065,6 @@ document.addEventListener(
         }
     }
 );
-
 
 /* =====================================================
    MOBILE TAP + LOOK
