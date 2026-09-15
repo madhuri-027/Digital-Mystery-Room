@@ -245,62 +245,83 @@ function createRandomPuzzleSet() {
 
 
     /* -------------------------------------------------
-       COMPUTER PASSWORD
-       Random letters, but generated from a secret
-       message's first letters.
-    ------------------------------------------------- */
+   COMPUTER PASSWORD
+   Random words are selected from different
+   secret-message groups.
+------------------------------------------------- */
 
-    const passwordWords = [
-        [
-            "Never",
-            "Open",
-            "Verify",
-            "Always"
-        ],
-        [
-            "Search",
-            "Under",
-            "Read",
-            "Exit"
-        ],
-        [
-            "Look",
-            "Observe",
-            "Verify",
-            "Analyze"
-        ],
-        [
-            "Find",
-            "Unlock",
-            "Inspect",
-            "Escape"
-        ],
-        [
-            "Check",
-            "Observe",
-            "Move",
-            "Enter"
-        ],
-        [
-            "Follow",
-            "Understand",
-            "Remember",
-            "Examine"
-        ]
+const passwordWords = [
+    [
+        "Never",
+        "Open",
+        "Verify",
+        "Always"
+    ],
+    [
+        "Search",
+        "Under",
+        "Read",
+        "Exit"
+    ],
+    [
+        "Look",
+        "Observe",
+        "Verify",
+        "Analyze"
+    ],
+    [
+        "Find",
+        "Unlock",
+        "Inspect",
+        "Escape"
+    ],
+    [
+        "Check",
+        "Observe",
+        "Move",
+        "Enter"
+    ],
+    [
+        "Follow",
+        "Understand",
+        "Remember",
+        "Examine"
+    ]
+];
+
+const selectedGroups = [];
+
+while (selectedGroups.length < 4) {
+
+    const groupIndex =
+        randomNumber(
+            0,
+            passwordWords.length - 1
+        );
+
+    if (!selectedGroups.includes(groupIndex)) {
+        selectedGroups.push(groupIndex);
+    }
+}
+
+const selectedWords = selectedGroups.map(groupIndex => {
+
+    const group = passwordWords[groupIndex];
+
+    return group[
+        randomNumber(
+            0,
+            group.length - 1
+        )
     ];
 
-    const selectedWords =
-        passwordWords[
-            randomNumber(
-                0,
-                passwordWords.length - 1
-            )
-        ];
+});
 
-    const computerPassword =
-        selectedWords
-            .map(word => word[0])
-            .join("");
+const computerPassword =
+    selectedWords
+        .map(word => word[0])
+        .join("")
+        .toUpperCase();
 
     /* -------------------------------------------------
        COMPUTER MATH
