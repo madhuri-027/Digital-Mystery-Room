@@ -6055,95 +6055,103 @@ document.addEventListener(
 
 
 /* =====================================================
-   MOBILE TAP TO EXPLORE
+   MOBILE TAP + LOOK
 ===================================================== */
 
-let mobileTapStartX = 0;
-let mobileTapStartY = 0;
+(function setupMobileTapAndLook() {
 
-let mobileTapMoved = false;
+    const mobileLookZone = document.getElementById("look-zone");
 
-
-renderer.domElement.addEventListener(
-    "pointerdown",
-    function(event) {
-
-        if (
-            !window.matchMedia(
-                "(pointer: coarse)"
-            ).matches
-        ) {
-            return;
-        }
-
-        mobileTapStartX =
-            event.clientX;
-
-        mobileTapStartY =
-            event.clientY;
-
-        mobileTapMoved = false;
+    if (!mobileLookZone) {
+        return;
     }
-);
 
+    let mobileLooking = false;
+    let mobileLastX = 0;
+    let mobileLastY = 0;
+    let mobileTapMoved = false;
 
-renderer.domElement.addEventListener(
-    "pointermove",
-    function(event) {
+    mobileLookZone.addEventListener(
+        "pointerdown",
+        function (event) {
 
-        if (
-            !window.matchMedia(
-                "(pointer: coarse)"
-            ).matches
-        ) {
-            return;
+            event.preventDefault();
+
+            mobileLooking = true;
+            mobileTapMoved = false;
+
+            mobileLastX = event.clientX;
+            mobileLastY = event.clientY;
+
+            mobileLookZone.setPointerCapture(
+                event.pointerId
+            );
         }
+    );
 
-        const dx =
-            event.clientX -
-            mobileTapStartX;
+    mobileLookZone.addEventListener(
+        "pointermove",
+        function (event) {
 
-        const dy =
-            event.clientY -
-            mobileTapStartY;
+            if (!mobileLooking) {
+                return;
+            }
 
-        if (
-            Math.abs(dx) > 10 ||
-            Math.abs(dy) > 10
-        ) {
+            event.preventDefault();
 
-            mobileTapMoved = true;
+            const deltaX =
+                event.clientX - mobileLastX;
+
+            const deltaY =
+                event.clientY - mobileLastY;
+
+            if (
+                Math.abs(deltaX) > 8 ||
+                Math.abs(deltaY) > 8
+            ) {
+                mobileTapMoved = true;
+            }
+
+            yaw -= deltaX * 0.008;
+
+            pitch -= deltaY * 0.008;
+
+            pitch = Math.max(
+                -1.4,
+                Math.min(
+                    1.4,
+                    pitch
+                )
+            );
+
+            mobileLastX = event.clientX;
+            mobileLastY = event.clientY;
         }
-    }
-);
+    );
 
+    mobileLookZone.addEventListener(
+        "pointerup",
+        function (event) {
 
-renderer.domElement.addEventListener(
-    "pointerup",
-    function(event) {
+            event.preventDefault();
 
-        if (
-            !window.matchMedia(
-                "(pointer: coarse)"
-            ).matches
-        ) {
-            return;
+            mobileLooking = false;
+
+            if (!mobileTapMoved) {
+                checkInteraction();
+            }
         }
+    );
 
-        if (mobileTapMoved) {
-            return;
+    mobileLookZone.addEventListener(
+        "pointercancel",
+        function () {
+
+            mobileLooking = false;
         }
+    );
 
-        const object =
-            getNearestInteractable();
-
-        if (object) {
-
-            interact(object.name);
-        }
-    }
-);
-
+})();
 
 /* =====================================================
    RAYCASTING
@@ -6658,15 +6666,19 @@ bindMovementButton(
 
 
 /* =====================================================
-   MOBILE LOOK
+   MOBILE LOOK + TAP TO INTERACT
 ===================================================== */
 
 const lookZone =
     document.getElementById("look-zone");
 
 let looking = false;
+
 let lastLookX = 0;
 let lastLookY = 0;
+
+let mobileTapMoved = false;
+
 
 if (lookZone) {
 
@@ -6677,6 +6689,8 @@ if (lookZone) {
             event.preventDefault();
 
             looking = true;
+
+            mobileTapMoved = false;
 
             lastLookX =
                 event.clientX;
@@ -6690,6 +6704,7 @@ if (lookZone) {
         }
     );
 
+
     lookZone.addEventListener(
         "pointermove",
         function(event) {
@@ -6701,18 +6716,27 @@ if (lookZone) {
             event.preventDefault();
 
             const deltaX =
-                event.clientX -
-                lastLookX;
+                event.clientX - lastLookX;
 
             const deltaY =
-                event.clientY -
-                lastLookY;
+                event.clientY - lastLookY;
+
+
+            if (
+                Math.abs(deltaX) > 8 ||
+                Math.abs(deltaY) > 8
+            ) {
+
+                mobileTapMoved = true;
+            }
+
 
             yaw -=
                 deltaX * 0.008;
 
             pitch -=
                 deltaY * 0.008;
+
 
             pitch =
                 Math.max(
@@ -6723,6 +6747,7 @@ if (lookZone) {
                     )
                 );
 
+
             lastLookX =
                 event.clientX;
 
@@ -6731,13 +6756,29 @@ if (lookZone) {
         }
     );
 
+
     lookZone.addEventListener(
         "pointerup",
-        function() {
+        function(event) {
+
+            event.preventDefault();
 
             looking = false;
+
+
+            /*
+             * If finger only tapped,
+             * interact with the object
+             * currently under the crosshair.
+             */
+
+            if (!mobileTapMoved) {
+
+                checkInteraction();
+            }
         }
     );
+
 
     lookZone.addEventListener(
         "pointercancel",
